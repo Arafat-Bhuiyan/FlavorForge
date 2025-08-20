@@ -139,12 +139,12 @@ export default function Login() {
 
             {/* Forgot Password */}
             <div className="text-right mb-6">
-              <a
-                href="#"
+              <Link
+                to="/forget-password"
                 className="text-sm text-[#E4572E] hover:text-[#f55423]"
               >
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             {/* Log In Button */}

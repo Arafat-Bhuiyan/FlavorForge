@@ -3,6 +3,7 @@ import { Layout } from "../layouts/Layout";
 import { Home } from "../pages/Home/Home";
 import Login from "../pages/Auth/Login/Login";
 import Signup from "../pages/Auth/Login/Signup";
+import { ForgetPassword } from "../pages/Auth/Login/ForgetPassword";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/forget-password",
+        element: <ForgetPassword />,
       },
     ],
   },
