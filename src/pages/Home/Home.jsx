@@ -1,9 +1,13 @@
-import React from "react";
+import { Banner } from "./Banner";
+import PopularDishes from "./PopularDishes";
+import { VideoInstruction } from "./VideoInstruction";
 
 export const Home = () => {
   return (
     <div>
-      <h1 className="">Home</h1>
+      <Banner />
+      <VideoInstruction />
+      <PopularDishes />
     </div>
   );
 };
