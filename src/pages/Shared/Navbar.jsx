@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export const Navbar = () => {
   return (
-    <div className="pb-4">
+    <div className="pb-16">
       <div className="flex justify-between items-center">
         <img src={logo} alt="" className="w-16 h-14" />
 

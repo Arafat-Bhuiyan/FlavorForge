@@ -1,5 +1,8 @@
+import { AiRecipies } from "./AiRecipies";
 import { Banner } from "./Banner";
 import PopularDishes from "./PopularDishes";
+import Subscription from "./Subsciption";
+import { Testimonial } from "./Testimonial";
 import { VideoInstruction } from "./VideoInstruction";
 
 export const Home = () => {
@@ -8,6 +11,9 @@ export const Home = () => {
       <Banner />
       <VideoInstruction />
       <PopularDishes />
+      <AiRecipies />
+      <Subscription />
+      <Testimonial />
     </div>
   );
 };
