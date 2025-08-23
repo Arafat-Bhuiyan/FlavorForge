@@ -42,7 +42,7 @@ const ProfileSettings = () => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="Your First Name"
-            className="w-full border border-[#2E2E2E]/20 text-[#2E2E2E]/50 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           />
         </div>
         <div>
@@ -50,7 +50,7 @@ const ProfileSettings = () => {
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="w-full border border-[#2E2E2E]/20 text-[#2E2E2E]/50  rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E]  rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">What is your gender?</option>
             <option value="male">Male</option>
@@ -65,7 +65,7 @@ const ProfileSettings = () => {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="w-full border border-[#2E2E2E]/20 text-[#2E2E2E]/50 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">Select your language</option>
             <option value="english">English</option>
@@ -78,7 +78,7 @@ const ProfileSettings = () => {
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            className="w-full border border-[#2E2E2E]/20 text-[#2E2E2E]/50 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">Select your country</option>
             <option value="usa">USA</option>

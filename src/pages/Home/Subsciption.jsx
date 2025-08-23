@@ -1,6 +1,12 @@
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Subscription = () => {
+  const navigate = useNavigate();
+
+  const handleSubscription = () => {
+    navigate("/subscription");
+  };
   return (
     <div className="min-h-screen px-4">
       {/* Pricing Section */}
@@ -65,7 +71,10 @@ const Subscription = () => {
               </div>
             </div>
 
-            <button className="w-full bg-[#E4572E] hover:bg-[#f74f1c] text-white font-semibold py-3 px-6 rounded-full transition-colors mt-auto">
+            <button
+              onClick={handleSubscription}
+              className="w-full bg-[#E4572E] hover:bg-[#f74f1c] text-white font-semibold py-3 px-6 rounded-full transition-colors mt-auto"
+            >
               Get Started
             </button>
           </div>
@@ -119,7 +128,10 @@ const Subscription = () => {
               </div>
             </div>
 
-            <button className="w-full bg-white text-[#E4572E] font-semibold py-3 px-6 rounded-full transition-colors mt-auto">
+            <button
+              onClick={handleSubscription}
+              className="w-full bg-white text-[#E4572E] font-semibold py-3 px-6 rounded-full transition-colors mt-auto"
+            >
               Get Started
             </button>
           </div>

@@ -6,6 +6,8 @@ import Signup from "../pages/Auth/Login/Signup";
 import { ForgetPassword } from "../pages/Auth/Login/ForgetPassword";
 import ProfileSettings from "../pages/Profile/ProfileSettings";
 import PopularRecipe from "../pages/PopularRecipe/PopularRecipe";
+import Subscribe from "../pages/Subscription/Subscribe";
+import ThankYou from "../pages/Subscription/ThankYou";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/popular-recipe",
         element: <PopularRecipe />,
+      },
+      {
+        path: "/subscription",
+        element: <Subscribe />,
       },
     ],
   },

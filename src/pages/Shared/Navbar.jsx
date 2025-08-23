@@ -1,9 +1,14 @@
 import logo from "/FlavorForgeLogo.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../Auth/Login/AuthContext";
-import profile from "../../assets/images/profile.png"
+import profile from "../../assets/images/profile.png";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
+  const goToProfileSetting = () => {
+    navigate("/profile-settings");
+  };
   const { user, logout } = useAuth();
   return (
     <div className="pb-16">
@@ -23,23 +28,15 @@ export const Navbar = () => {
           </NavLink>
 
           <a
-            href="#how-it-works"
-            className={({ isActive }) =>
-              isActive
-                ? "px-4 py-4 bg-[#E4572E] text-white rounded"
-                : "px-4 py-2 text-gray-700 hover:text-[#E4572E]"
-            }
+            href="/#how-it-works"
+            className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
           >
             How it Works
           </a>
 
           <a
-            href="#faqs"
-            className={({ isActive }) =>
-              isActive
-                ? "px-4 py-2 bg-[#E4572E] text-white rounded"
-                : "px-4 py-2 text-gray-700 hover:text-[#E4572E]"
-            }
+            href="/#faqs"
+            className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
           >
             FAQs
           </a>
@@ -64,7 +61,7 @@ export const Navbar = () => {
                 </svg>
               </div>
 
-              <div className="">
+              <div onClick={goToProfileSetting}>
                 <img
                   src={user.photoURL || profile} // default avatar
                   alt="profile"
