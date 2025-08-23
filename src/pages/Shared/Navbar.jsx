@@ -22,19 +22,19 @@ export const Navbar = () => {
             Home
           </NavLink>
 
-          <NavLink
-            to="/how-it-works"
+          <a
+            href="#how-it-works"
             className={({ isActive }) =>
               isActive
-                ? "px-4 py-2 bg-[#E4572E] text-white rounded"
+                ? "px-4 py-4 bg-[#E4572E] text-white rounded"
                 : "px-4 py-2 text-gray-700 hover:text-[#E4572E]"
             }
           >
             How it Works
-          </NavLink>
+          </a>
 
-          <NavLink
-            to="/faqs"
+          <a
+            href="#faqs"
             className={({ isActive }) =>
               isActive
                 ? "px-4 py-2 bg-[#E4572E] text-white rounded"
@@ -42,7 +42,7 @@ export const Navbar = () => {
             }
           >
             FAQs
-          </NavLink>
+          </a>
         </div>
 
         <div className="flex gap-3 font-medium text-base items-center">

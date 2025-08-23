@@ -43,7 +43,7 @@ const FAQs = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center justify-center">
+    <div id="faqs" className="w-full flex flex-col gap-2 items-center justify-center">
       <h1 className="text-[#2E2E2E] font-semibold text-3xl mb-2 mt-8 text-center">
         FAQs
       </h1>

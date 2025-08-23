@@ -3,7 +3,7 @@ import play from "../../assets/images/playButton.png";
 
 export const VideoInstruction = () => {
   return (
-    <div className="w-full flex items-center mt-10">
+    <div id="how-it-works" className="w-full flex items-center mt-10">
       <div className="w-1/2 flex flex-col gap-6 text-[#2E2E2E] pr-6">
         <h1 className="font-semibold text-4xl">How it work</h1>
         <p className="font-medium text-base">
