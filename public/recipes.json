@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "Garlic Butter Chicken with Broccoli",
+    "description": "Garlic Butter Chicken with Broccoli is a quick and tasty stir-fry dish made with tender chicken, fresh broccoli, garlic, butter, and a light soy-based sauce. It's flavorful, easy to cook in under 30 minutes, and perfect to serve with rice or noodles for a complete meal.",
+    "rating": 3,
+    "reviews": 8,
+    "ingredients": [
+      "2 chicken breasts (boneless, skinless, cut into bite-size pieces)",
+      "2 cups broccoli florets (fresh or frozen)",
+      "3 cloves garlic, minced",
+      "2 tbsp butter",
+      "2 tbsp olive oil",
+      "1/2 cup chicken broth (or water)",
+      "1 tbsp soy sauce",
+      "1/2 tsp black pepper",
+      "1/2 tsp salt (or to taste)",
+      "1/2 tsp chili flakes (optional, for spice)"
+    ],
+    "instructions": [
+      "Season chicken pieces with salt and pepper.",
+      "Heat olive oil in a large pan over medium-high heat. Add chicken and cook for 5-7 minutes until golden brown and fully cooked. Remove from pan and set aside.",
+      "In the same pan, add butter. Add garlic and sauté for 1 minute until fragrant. Add broccoli and stir well. Pour in chicken broth and cover the pan. Steam for 3-4 minutes until broccoli is tender but still crisp.",
+      "Return chicken to the pan. Add soy sauce and mix everything together. Cook for another 2 minutes so flavors combine.",
+      "Sprinkle chili flakes (optional). Serve hot with steamed rice or noodles."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "One-Skillet Garlicky Salmon & Broccoli",
+    "description": "Rich in omega-3 fatty acids and antioxidants, this dish supports heart health while providing a balanced, nutrient-packed meal in under 20 minutes.",
+    "rating": 4,
+    "reviews": 8,
+    "ingredients": [
+      "2 salmon fillets (skin on or off, as preferred)",
+      "2 cups broccoli florets",
+      "3 cloves garlic, minced",
+      "2 tbsp olive oil",
+      "1 tbsp butter (optional, for richness)",
+      "1/2 lemon (juice + zest)",
+      "Salt and pepper, to taste",
+      "Red pepper flakes (optional, for a little heat)"
+    ],
+    "instructions": [
+      "Pat the salmon fillets dry with paper towels. Season both sides with salt and pepper.",
+      "Heat 1 tbsp olive oil in a large skillet over medium-high heat. Place salmon skin-side down (if using skin), and sear for 4-5 minutes. Flip and cook the other side for another 3-4 minutes until golden and cooked through. Remove salmon from skillet and set aside.",
+      "In the same skillet, add the remaining 1 tbsp olive oil and butter. Toss in the minced garlic and sauté for 30 seconds until fragrant. Add broccoli florets, season with salt, and stir-fry for 4-5 minutes until tender-crisp.",
+      "Return salmon to the skillet, nestling it among the broccoli. Squeeze fresh lemon juice over everything and sprinkle with lemon zest. Optional: add a pinch of red pepper flakes for spice.",
+      "Serve straight from the skillet for a rustic look. Pair with rice, quinoa, or crusty bread if desired."
+    ]
+  }
+]

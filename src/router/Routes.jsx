@@ -4,6 +4,7 @@ import { Home } from "../pages/Home/Home";
 import Login from "../pages/Auth/Login/Login";
 import Signup from "../pages/Auth/Login/Signup";
 import { ForgetPassword } from "../pages/Auth/Login/ForgetPassword";
+import ProfileSettings from "../pages/Profile/ProfileSettings";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/forget-password",
         element: <ForgetPassword />,
+      },
+      {
+        path: "/profile-settings",
+        element: <ProfileSettings />,
       },
     ],
   },

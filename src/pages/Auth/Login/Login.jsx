@@ -2,13 +2,17 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import profile from "../../../assets/images/profile.png"
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -37,9 +41,16 @@ export default function Login() {
     setError("");
     toast.success("Login successful");
 
+    login({
+      name: "Sarif",
+      email,
+      photoURL: profile,
+    });
+
     // Input fields clear
     setEmail("");
     setPassword("");
+    navigate("/");
   };
 
   return (
