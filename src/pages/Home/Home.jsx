@@ -1,5 +1,6 @@
 import { AiRecipies } from "./AiRecipies";
 import { Banner } from "./Banner";
+import FAQs from "./FAQs";
 import PopularDishes from "./PopularDishes";
 import Subscription from "./Subsciption";
 import { Testimonial } from "./Testimonial";
@@ -14,6 +15,7 @@ export const Home = () => {
       <AiRecipies />
       <Subscription />
       <Testimonial />
+      <FAQs />
     </div>
   );
 };
