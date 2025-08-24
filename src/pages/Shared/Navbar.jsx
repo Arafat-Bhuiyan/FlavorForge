@@ -9,6 +9,9 @@ export const Navbar = () => {
   const goToProfileSetting = () => {
     navigate("/profile-settings");
   };
+  const goToSettings = () => {
+    navigate("/settings");
+  };
   const { user, logout } = useAuth();
   return (
     <div className="pb-16">
@@ -45,7 +48,7 @@ export const Navbar = () => {
         <div className="flex gap-3 font-medium text-base items-center">
           {user ? (
             <div className="flex items-center gap-4">
-              <div className="bg-[#E4572E]/30 flex items-center justify-center rounded-full w-12 h-12">
+              <div onClick={goToSettings} className="bg-[#E4572E]/30 flex items-center justify-center rounded-full w-12 h-12">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}

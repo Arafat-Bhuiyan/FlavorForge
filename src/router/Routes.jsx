@@ -9,6 +9,7 @@ import PopularRecipe from "../pages/PopularRecipe/PopularRecipe";
 import Subscribe from "../pages/Subscription/Subscribe";
 import ThankYou from "../pages/Subscription/ThankYou";
 import Chatbot from "../pages/ChatBot/Chatbot";
+import { Settings } from "../pages/Settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "/chatbot",
         element: <Chatbot />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
       },
     ],
   },
