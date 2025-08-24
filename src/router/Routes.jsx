@@ -8,6 +8,7 @@ import ProfileSettings from "../pages/Profile/ProfileSettings";
 import PopularRecipe from "../pages/PopularRecipe/PopularRecipe";
 import Subscribe from "../pages/Subscription/Subscribe";
 import ThankYou from "../pages/Subscription/ThankYou";
+import Chatbot from "../pages/ChatBot/Chatbot";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/subscription",
         element: <Subscribe />,
+      },
+      {
+        path: "/chatbot",
+        element: <Chatbot />,
       },
     ],
   },

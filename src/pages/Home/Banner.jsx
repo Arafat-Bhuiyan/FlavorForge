@@ -1,7 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import bannerImg from "../../assets/images/banner-img.png";
 import { MoveRight } from "lucide-react";
 
 export const Banner = () => {
+  const navigate = useNavigate();
+
+  const goToChatbot = () => {
+    navigate("/chatbot");
+  };
+
   return (
     <div className="w-full flex items-center">
       <div className="w-2/3">
@@ -20,7 +27,7 @@ export const Banner = () => {
             your kitchen
           </p>
 
-          <button className="w-72 h-14 bg-[#E4572E] text-white rounded-lg flex gap-2 items-center justify-center">
+          <button onClick={goToChatbot} className="w-72 h-14 bg-[#E4572E] text-white rounded-lg flex gap-2 items-center justify-center">
             Get Started for Free{" "}
             <span className="mt-1">
               <MoveRight color="#ffffff" />
