@@ -7,9 +7,11 @@ import { ForgetPassword } from "../pages/Auth/Login/ForgetPassword";
 import ProfileSettings from "../pages/Profile/ProfileSettings";
 import PopularRecipe from "../pages/PopularRecipe/PopularRecipe";
 import Subscribe from "../pages/Subscription/Subscribe";
-import ThankYou from "../pages/Subscription/ThankYou";
 import Chatbot from "../pages/ChatBot/Chatbot";
 import { Settings } from "../pages/Settings/Settings";
+import Terms from "../pages/Settings/Terms";
+import Policy from "../pages/Settings/Policy";
+
 
 const router = createBrowserRouter([
   {
@@ -60,6 +62,14 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
+      },
+      {
+        path: "/terms&conditions",
+        element: <Terms />,
+      },
+      {
+        path: "/privacy-policy",
+        element: <Policy />,
       },
     ],
   },
