@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Edit2, Mail } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import profile from "../../assets/images/profile.png";
 import sms from "../../assets/images/sms.png";
+import camera from "../../assets/images/camera.png";
 
 const ProfileSettings = () => {
   const [fullName, setFullName] = useState("");
@@ -13,7 +14,7 @@ const ProfileSettings = () => {
     <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
           <div className="w-16 h-16 rounded-full overflow-hidden">
             <img
               src={profile}
@@ -21,6 +22,7 @@ const ProfileSettings = () => {
               className="w-full h-full object-cover"
             />
           </div>
+          <img src={camera} alt="profile" className="absolute left-11 top-10 w-8 h-7" />
           <div>
             <h2 className="text-[#2E2E2E] font-medium text-lg">Alex Rawls</h2>
             <p className="text-[#2E2E2E]/50 text-sm">alexrawls@gmail.com</p>
