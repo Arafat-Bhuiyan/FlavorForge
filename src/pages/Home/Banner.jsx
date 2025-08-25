@@ -14,9 +14,10 @@ export const Banner = () => {
       <div className="w-2/3">
         <div className="flex flex-col gap-6 max-w-screen-md">
           <h1 className="font-bold text-5xl text-[#731B00] leading-snug">
-            Get AI Recipe Idea With
-            <span className="block">AI & Cook Anything,</span>
-            <span className="block">Eat Better, Live Healthier</span>
+            FlavorForge uses smart AI to
+            <span className="block">create personalized recipes</span>
+            <span className="block">from your pantry, helping</span>
+            <span className="block">you save time in seconds</span>
           </h1>
 
           <p className="font-medium text-base text-[#2E2E2E]">

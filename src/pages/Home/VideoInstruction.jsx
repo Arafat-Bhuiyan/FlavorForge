@@ -5,9 +5,9 @@ export const VideoInstruction = () => {
   return (
     <div id="how-it-works" className="w-full flex items-center mt-10">
       <div className="w-1/2 flex flex-col gap-6 text-[#2E2E2E] pr-6">
-        <h1 className="font-semibold text-4xl">How it work</h1>
+        <h1 className="font-semibold text-4xl">How it works</h1>
         <p className="font-medium text-base">
-          Your personal AI chef — choose your ingredients or type them in, <br /> and
+          Your personal chef — choose your ingredients or type them in, <br /> and
           get instant, delicious recipes tailored just for you
         </p>
         <div className="flex items-center gap-2">

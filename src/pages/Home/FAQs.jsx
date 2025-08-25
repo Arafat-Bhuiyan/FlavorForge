@@ -4,9 +4,9 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 const faqs = [
   {
-    question: "1. How does the AI chef work?",
+    question: "1. How does FlavorForge work?",
     answer:
-      "Our AI analyzes the ingredients you have, your dietary preferences, and your taste to create personalized recipes in seconds. Whether you're a home cook or culinary enthusiast, our platform helps you create unique recipes, design complete menus, and discover new dishes through advanced AI technology.",
+      "Simply input the ingredients you have (protein, vegetables, grains, spices, etc.) and optionally select a cuisine or dietary preference. FlavorForge uses AI to generate step-by-step recipes tailored to your inputs.",
   },
   {
     question: "2. Do I need to sign up to use it?",
@@ -43,7 +43,10 @@ const FAQs = () => {
   };
 
   return (
-    <div id="faqs" className="w-full flex flex-col gap-2 items-center justify-center">
+    <div
+      id="faqs"
+      className="w-full flex flex-col gap-2 items-center justify-center"
+    >
       <h1 className="text-[#2E2E2E] font-semibold text-3xl mb-2 mt-8 text-center">
         FAQs
       </h1>

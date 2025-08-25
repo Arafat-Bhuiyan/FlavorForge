@@ -23,26 +23,28 @@ const Subscription = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Basic Plan */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-[#E4572E] flex flex-col">
-            <div className="mb-6 flex-1">
-              <div className="text-lg text-[#E4572E] font-semibold mb-2">
+            <div className="flex-1">
+              <div className="text-lg text-[#E4572E] font-semibold">
                 Monthly Plan
               </div>
-              <h3 className="text-3xl text-[#2E2E2E] mb-2">Basic</h3>
-              <p className="text-[#2E2E2E] text-lg mb-6">
+              <h3 className="text-3xl text-[#2E2E2E] my-5">Basic</h3>
+              <p className="w-1/2 text-[#2E2E2E] text-lg">
                 Experience the convenience of our services with a handful of
                 small projects.
               </p>
+            </div>
 
-              <div className="mb-6">
-                <span className="text-4xl font-bold text-[#E4572E]">$9.99</span>
-                <span className="text-[#E4572E] text-lg font-bold">/mo</span>
-                <div className="text-sm text-gray-500 mt-1">
-                  Pause or cancel anytime
-                  <br />7 days money-back guarantee
-                </div>
+            <div className="my-10">
+              <span className="text-4xl font-bold text-[#E4572E]">
+                {" "}
+                <span className="text-2xl font-normal">$</span>6.99
+              </span>
+              <span className="text-[#E4572E] text-xl font-bold">/monthly</span>
+              <div className="text-base text-[#2E2E2E] mt-1">
+                List all features under here
               </div>
             </div>
 
@@ -80,28 +82,38 @@ const Subscription = () => {
           </div>
 
           {/* Standard Plan */}
-          <div className="bg-[#E4572E]/20 rounded-2xl shadow-lg p-8 flex flex-col">
-            <div className="mb-6 flex-1">
-              <div className="text-lg text-[#E4572E] font-semibold mb-2">
-                Yearly Plan{" "}
-                <span className="text-[#2E2E2E] text-sm font-normal">
-                  {" "}
-                  (Best Value — Save 30%) $6.99 / month billed annually ($83.88)
-                </span>
+          <div className="bg-[#F8CDA3] rounded-2xl shadow-lg p-8 flex flex-col">
+            <div className="flex-1">
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-lg text-[#E4572E] font-semibold">
+                    Yearly Plan{" "}
+                    <span className="text-[#2E2E2E] text-base font-medium">
+                      (Best Value — Save 20%)
+                    </span>
+                    <p className="text-[#2E2E2E] text-base font-normal">
+                      $66.99 / year (equivalent to $5.59 / month)
+                    </p>
+                  </p>
+                </div>
+                <p className="text-3xl font-semibold text-[#E4572E]">
+                  Save 20%
+                </p>
               </div>
-              <h3 className="text-3xl text-[#2E2E2E] mb-2">Standard</h3>
-              <p className="text-[#2E2E2E] text-lg mb-6">
-                Experience the convenience of our services with a handful of
+              <h3 className="text-3xl text-[#2E2E2E] my-5">Standard</h3>
+              <p className="w-1/2 text-[#2E2E2E] text-lg">
+                Experience the excellence of our services with a handful of
                 small projects.
               </p>
+            </div>
 
-              <div className="mb-6">
-                <span className="text-4xl font-bold text-[#E4572E]">$20.9</span>
-                <span className="text-[#E4572E] text-lg font-bold">/mo</span>
-                <div className="text-sm text-gray-500 mt-1">
-                  Pause or cancel anytime
-                  <br />7 days money-back guarantee
-                </div>
+            <div className="my-10">
+              <span className="text-4xl font-bold text-[#E4572E]">
+                <span className="text-2xl font-normal">$</span>66.99
+              </span>
+              <span className="text-[#E4572E] text-xl font-bold">/yearly</span>
+              <div className="text-base text-[#2E2E2E] mt-1">
+                List all features under here
               </div>
             </div>
 

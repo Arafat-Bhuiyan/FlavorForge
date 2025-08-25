@@ -11,7 +11,7 @@ export const Testimonial = () => {
   const testimonials = [
     {
       id: 1,
-      text: "ChefGPT has transformed my cooking routine! The AI-powered recipes are easy to follow and help me stay on track with my health goals.",
+      text: "FlavorForge has transformed my cooking routine! The AI-powered recipes are easy to follow and help me stay on track with my health goals.",
       name: "Sarah Johnson",
       title: "Home Cook, New York, USA",
       rating: 4,
@@ -19,7 +19,7 @@ export const Testimonial = () => {
     },
     {
       id: 2,
-      text: "The recipe variety on ChefGPT is amazing! Even as a professional, I found inspiration and new ideas for my dishes.",
+      text: "The recipe variety on FlavorForge is amazing! Even asa professional, I found inspiration and new ideas for my dishes.",
       name: "Emily Clarke",
       title: "Professional Chef, London, UK",
       rating: 5,
@@ -27,7 +27,7 @@ export const Testimonial = () => {
     },
     {
       id: 3,
-      text: "ChefGPT helps me cook delicious meals in minutes. The step-by-step guides are perfect for someone like me who's always busy.",
+      text: "FlavorForge helps me cook delicious meals in minutes. The step-by-step guides are perfect for someone like me who’s always busy.",
       name: "Rajiv Singh",
       title: "Student, Mumbai, India",
       rating: 5,
@@ -51,7 +51,7 @@ export const Testimonial = () => {
     },
     {
       id: 6,
-      text: "Never thought cooking could be this easy! ChefGPT makes meal planning effortless and fun.",
+      text: "Never thought cooking could be this easy! FlavorForge makes meal planning effortless and fun.",
       name: "Lisa Chen",
       title: "Working Mom, Toronto, Canada",
       rating: 5,
@@ -98,14 +98,14 @@ export const Testimonial = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <div className="text-[#E4572E] font-semibold text-3xl mb-2">
-            Testimonial
+            Testimonials
           </div>
           <h2 className="text-4xl font-medium text-[#2E2E2E] mb-4">
             Trusted by Thousands of Food Lovers
           </h2>
           <p className="text-[#2E2E2E] text-lg">
             Hear from our users who are achieving their health goals and
-            mastering new dishes with ChefGPT
+            mastering new dishes with FlavorForge
           </p>
         </div>
 
