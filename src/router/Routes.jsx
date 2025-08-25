@@ -11,7 +11,7 @@ import Chatbot from "../pages/ChatBot/Chatbot";
 import { Settings } from "../pages/Settings/Settings";
 import Terms from "../pages/Settings/Terms";
 import Policy from "../pages/Settings/Policy";
-
+import DashboardMainPage from "../Admin/Dashboard/DashboardMainPage";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +72,11 @@ const router = createBrowserRouter([
         element: <Policy />,
       },
     ],
+  },
+
+  {
+    path: "/admin",
+    element: <DashboardMainPage />,
   },
 ]);
 
