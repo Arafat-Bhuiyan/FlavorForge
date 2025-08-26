@@ -4,6 +4,7 @@ import { Sidebar } from "../Sidebar/Sidebar";
 import { StartCards } from "./StartCards";
 import Users from "../Users/Users";
 import AiUsageLogs from "../AiUsageLogs/AiUsageLogs";
+import Settings from "../Settings/Settings";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -51,6 +52,7 @@ export default function DashboardMainPage() {
           )}
           {currentComponent === "Users" && <Users />}
           {currentComponent === "AI Usage Logs" && <AiUsageLogs />}
+          {currentComponent === "Settings" && <Settings />}
         </div>
       </div>
     </div>

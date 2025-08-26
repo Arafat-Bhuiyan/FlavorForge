@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CustomDropdown from "../CustomDropdown";
-import aiUsageLogsData from "../../../public/ai_usage_logs.json"; // Import JSON data
+import aiUsageLogsData from "../../../public/ai_usage_logs.json";
 
 export default function AiUsageLogs() {
   const [logs, setLogs] = useState([]);
@@ -60,9 +60,7 @@ export default function AiUsageLogs() {
                 <td className="px-4 py-3">{log.email}</td>
                 <td className="px-4 py-3">{log.ingredients.join(", ")}</td>
                 <td className="px-4 py-3 text-center">{log.recipeGenerated}</td>
-                <td className="px-4 py-3 text-center">
-                  {log.status}
-                </td>
+                <td className="px-4 py-3 text-center">{log.status}</td>
               </tr>
             ))}
           </tbody>
