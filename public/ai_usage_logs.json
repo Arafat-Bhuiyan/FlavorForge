@@ -1,0 +1,44 @@
+[
+  {
+    "date": "16/08/2025",
+    "email": "jiaim@email.com",
+    "ingredients": ["Chicken", "Onion"],
+    "recipeGenerated": "Spicy Chicken Curry",
+    "status": "Success"
+  },
+  {
+    "date": "15/08/2025",
+    "email": "sumya@email.com",
+    "ingredients": ["Fish", "Tomato"],
+    "recipeGenerated": "Tangy Fish Stew",
+    "status": "Success"
+  },
+  {
+    "date": "15/08/2025",
+    "email": "hasan@email.com",
+    "ingredients": ["Paneer", "Spinach"],
+    "recipeGenerated": "Palak Paneer",
+    "status": "Failed"
+  },
+  {
+    "date": "14/08/2025",
+    "email": "raim@email.com",
+    "ingredients": ["Egg", "Potato"],
+    "recipeGenerated": "Egg & Potato Curry",
+    "status": "Failed"
+  },
+  {
+    "date": "14/08/2025",
+    "email": "test@email.com",
+    "ingredients": ["Chicken"],
+    "recipeGenerated": "Roast Chicken",
+    "status": "Success"
+  },
+  {
+    "date": "13/08/2025",
+    "email": "jim@email.com",
+    "ingredients": ["Egg", "Tomato"],
+    "recipeGenerated": "Egg Tomato Curry",
+    "status": "Failed"
+  }
+]

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { StartCards } from "./StartCards";
 import Users from "../Users/Users";
+import AiUsageLogs from "../AiUsageLogs/AiUsageLogs";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -40,7 +41,7 @@ export default function DashboardMainPage() {
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 bg-[#FFFDF8]">
           {/* Conditionally render the component based on the state */}
           {currentComponent === "Dashboard" && (
             <div className="">
@@ -49,6 +50,7 @@ export default function DashboardMainPage() {
             </div>
           )}
           {currentComponent === "Users" && <Users />}
+          {currentComponent === "AI Usage Logs" && <AiUsageLogs />}
         </div>
       </div>
     </div>

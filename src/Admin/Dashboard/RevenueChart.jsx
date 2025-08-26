@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceDot,
 } from "recharts";
+import CustomDropdown from "../CustomDropdown";
 
 const data = [
   { name: "Jan", value1: 200, value2: 300 },
@@ -26,6 +27,7 @@ const data = [
 ];
 
 const RevenueChart = () => {
+  const timeOptions = ["Weekly", "Monthly", "Yearly"];
   return (
     <div className="bg-white p-4 rounded-2xl shadow-sm relative">
       <div className="flex justify-between items-center mb-4">
@@ -36,13 +38,12 @@ const RevenueChart = () => {
             <span className="text-[#2D9CDB]">Yearly</span> Plan
           </span>
         </h2>
-        <div className="flex items-center space-x-2">
-          <select className="text-sm border border-[#E4572E] rounded px-2 py-1">
-            <option>Filter</option>
-            <option>Weekly</option>
-            <option>Monthly</option>
-            <option>Yearly</option>
-          </select>
+        <div className="flex items-center space-x-2 w-40">
+          <CustomDropdown
+            options={timeOptions}
+            defaultLabel="Filter"
+            onSelect={(value) => console.log("Selected:", value)}
+          />
         </div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
