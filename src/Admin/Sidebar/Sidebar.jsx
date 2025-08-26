@@ -90,7 +90,7 @@ export const Sidebar = ({ currentComponent, onMenuClick }) => {
     { icon: user, label: "Users" },
     { icon: subscription, label: "Subscription" },
     { icon: ai, label: "AI Usage Logs" },
-    { icon: settings, label: "Setting" },
+    { icon: settings, label: "Settings" },
   ];
   return (
     <div className="w-64 bg-[#FAF3E0] shadow-sm relative">

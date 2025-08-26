@@ -2,7 +2,7 @@ import profile from "../../assets/images/profile4.png";
 import { useState } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { StartCards } from "./StartCards";
-import { RightSidebar } from "./RightSidebar";
+import Users from "../Users/Users";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -22,12 +22,20 @@ export default function DashboardMainPage() {
         {/* Header */}
         <div className="bg-[#FFFDF8] px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-normal text-gray-900">Dashboard</h1>
-            <img
-              src={profile}
-              alt="profile"
-              className="w-12 h-12"
-            />
+            <h1 className="text-3xl font-normal text-gray-900">
+              {currentComponent === "Dashboard"
+                ? "Dashboard"
+                : currentComponent === "Users"
+                ? "Users Management"
+                : currentComponent === "Subscription"
+                ? "Subscription"
+                : currentComponent === "AI Usage Logs"
+                ? "AI Usage Logs"
+                : currentComponent === "Settings"
+                ? "Settings"
+                : "Dashboard"}
+            </h1>
+            <img src={profile} alt="profile" className="w-12 h-12" />
           </div>
         </div>
 
@@ -40,7 +48,7 @@ export default function DashboardMainPage() {
               <StartCards />
             </div>
           )}
-          {currentComponent === "Users" && <div>Appointment</div>}
+          {currentComponent === "Users" && <Users />}
         </div>
       </div>
     </div>
