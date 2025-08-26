@@ -29,10 +29,19 @@ const RevenueChart = () => {
   return (
     <div className="bg-white p-4 rounded-2xl shadow-sm relative">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold text-2xl">Monthly Revenue</h2>
+        <h2 className="font-semibold text-2xl text-[#2e2e2e]">
+          Revenue{" "}
+          <span className="text-xs">
+            <span className="text-[#E4572E]">Monthly</span>/
+            <span className="text-[#2D9CDB]">Yearly</span> Plan
+          </span>
+        </h2>
         <div className="flex items-center space-x-2">
           <select className="text-sm border border-[#E4572E] rounded px-2 py-1">
             <option>Filter</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+            <option>Yearly</option>
           </select>
         </div>
       </div>
