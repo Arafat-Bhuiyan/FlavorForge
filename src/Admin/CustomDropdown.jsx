@@ -11,11 +11,19 @@ export default function CustomDropdown({ options, defaultLabel, onSelect }) {
     if (onSelect) onSelect(option);
   };
 
+  // Make a mapping for setting the background color according to the status.
+  const statusColors = {
+    Active: "bg-[#4CAF50] text-[#FFF9F8] border-none font-medium",
+    Postpone: "bg-[#E4572E] text-[#FFF9F8] border-none font-medium",
+    Default: "bg-white text-[#2e2e2e] border-[#E4572E]/40",
+  };
+
   return (
     <div className="relative w-full">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between border border-[#E4572E]/40 rounded px-3 py-2 text-sm text-[#2e2e2e] focus:ring-1 focus:ring-[#E4572E]/60"
+        className={`w-full flex items-center justify-between rounded px-3 py-2 text-sm border border-[#E4572E]/40 focus:ring-1 focus:ring-[#E4572E]/60
+          ${statusColors[selected] || statusColors.Default}`}
       >
         {selected}
         {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}

@@ -5,6 +5,7 @@ import { StartCards } from "./StartCards";
 import Users from "../Users/Users";
 import AiUsageLogs from "../AiUsageLogs/AiUsageLogs";
 import Settings from "../Settings/Settings";
+import { Subscription } from "../Subscription/Subscription";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -35,6 +36,8 @@ export default function DashboardMainPage() {
                 ? "AI Usage Logs"
                 : currentComponent === "Settings"
                 ? "Settings"
+                : currentComponent === "Plan Management"
+                ? "Plan Management"
                 : "Dashboard"}
             </h1>
             <img src={profile} alt="profile" className="w-12 h-12" />
@@ -53,6 +56,7 @@ export default function DashboardMainPage() {
           {currentComponent === "Users" && <Users />}
           {currentComponent === "AI Usage Logs" && <AiUsageLogs />}
           {currentComponent === "Settings" && <Settings />}
+          {currentComponent === "Subscription" && <Subscription />}
         </div>
       </div>
     </div>
