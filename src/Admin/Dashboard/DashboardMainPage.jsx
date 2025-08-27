@@ -7,6 +7,7 @@ import AiUsageLogs from "../AiUsageLogs/AiUsageLogs";
 import Settings from "../Settings/Settings";
 import { Subscription } from "../Subscription/Subscription";
 import PlanManagement from "../PlanManagement/PlanManagement";
+import Profile from "../Profile/Profile";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -39,9 +40,16 @@ export default function DashboardMainPage() {
                 ? "Settings"
                 : currentComponent === "Plan Management"
                 ? "Plan Management"
+                : currentComponent === "Profile"
+                ? "Profile"
                 : "Dashboard"}
             </h1>
-            <img src={profile} alt="profile" className="w-12 h-12" />
+            <img
+              onClick={() => handleComponentChange("Profile")}
+              src={profile}
+              alt="profile"
+              className="w-12 h-12"
+            />
           </div>
         </div>
 
@@ -59,6 +67,7 @@ export default function DashboardMainPage() {
           {currentComponent === "Settings" && <Settings />}
           {currentComponent === "Subscription" && <Subscription />}
           {currentComponent === "Plan Management" && <PlanManagement />}
+          {currentComponent === "Profile" && <Profile />}
         </div>
       </div>
     </div>
