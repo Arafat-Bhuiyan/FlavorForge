@@ -12,6 +12,8 @@ import { Settings } from "../pages/Settings/Settings";
 import Terms from "../pages/Settings/Terms";
 import Policy from "../pages/Settings/Policy";
 import DashboardMainPage from "../Admin/Dashboard/DashboardMainPage";
+import AdminLogin from "../Admin/Auth/AdminLogin";
+import ProtectedRoute from "../Admin/Auth/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -75,7 +77,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <DashboardMainPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardMainPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/login",
+    element: <AdminLogin />,
   },
 ]);
 

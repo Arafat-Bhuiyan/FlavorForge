@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export const Sidebar = ({ currentComponent, onMenuClick }) => {
   const dashboard = () => (
     <svg
@@ -113,6 +115,12 @@ export const Sidebar = ({ currentComponent, onMenuClick }) => {
     { icon: ai, label: "AI Usage Logs" },
     { icon: settings, label: "Settings" },
   ];
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/admin/login");
+  }
   return (
     <div className="w-64 bg-[#FAF3E0] shadow-sm relative">
       {/* Logo */}
@@ -150,7 +158,7 @@ export const Sidebar = ({ currentComponent, onMenuClick }) => {
       {/* Logout */}
       <div className="absolute bottom-4 left-4 right-4">
         <div className="flex items-center justify-center mx-auto px-4 pb-4">
-          <button className="flex items-center space-x-3 px-3 py-2 text-[#FDFDFD] bg-[#E4572E] rounded-full transition-colors">
+          <button onClick={handleLogout} className="flex items-center space-x-3 px-3 py-2 text-[#FDFDFD] bg-[#E4572E] rounded-full transition-colors">
             {logout()}
             <span className="font-medium text-xl">Logout</span>
           </button>

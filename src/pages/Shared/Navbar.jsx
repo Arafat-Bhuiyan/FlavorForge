@@ -48,7 +48,17 @@ export const Navbar = () => {
         <div className="flex gap-3 font-medium text-base items-center">
           {user ? (
             <div className="flex items-center gap-4">
-              <div onClick={goToSettings} className="bg-[#E4572E]/30 flex items-center justify-center rounded-full w-12 h-12">
+              <div onClick={goToProfileSetting}>
+                <img
+                  src={user.photoURL || profile} // default avatar
+                  alt="profile"
+                  className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
+                />
+              </div>
+              <div
+                onClick={goToSettings}
+                className="bg-[#E4572E]/30 flex items-center justify-center rounded-full w-12 h-12"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -63,17 +73,19 @@ export const Navbar = () => {
                   ></path>
                 </svg>
               </div>
-
-              <div onClick={goToProfileSetting}>
-                <img
-                  src={user.photoURL || profile} // default avatar
-                  alt="profile"
-                  className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
-                />
-              </div>
-              {/* <button onClick={logout} className="text-sm text-red-500">
-                Logout
-              </button> */}
+              <button onClick={logout} className="bg-[#FFF8EA] border border-[#E4572E]/40 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#2e2e2e"
+                    d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h6q.425 0 .713.288T12 4t-.288.713T11 5H5v14h6q.425 0 .713.288T12 20t-.288.713T11 21zm12.175-8H10q-.425 0-.712-.288T9 12t.288-.712T10 11h7.175L15.3 9.125q-.275-.275-.275-.675t.275-.7t.7-.313t.725.288L20.3 11.3q.3.3.3.7t-.3.7l-3.575 3.575q-.3.3-.712.288t-.713-.313q-.275-.3-.262-.712t.287-.688z"
+                  ></path>
+                </svg>
+              </button>
             </div>
           ) : (
             <>
