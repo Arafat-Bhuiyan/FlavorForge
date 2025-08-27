@@ -6,6 +6,7 @@ import Users from "../Users/Users";
 import AiUsageLogs from "../AiUsageLogs/AiUsageLogs";
 import Settings from "../Settings/Settings";
 import { Subscription } from "../Subscription/Subscription";
+import PlanManagement from "../PlanManagement/PlanManagement";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -57,6 +58,7 @@ export default function DashboardMainPage() {
           {currentComponent === "AI Usage Logs" && <AiUsageLogs />}
           {currentComponent === "Settings" && <Settings />}
           {currentComponent === "Subscription" && <Subscription />}
+          {currentComponent === "Plan Management" && <PlanManagement />}
         </div>
       </div>
     </div>
