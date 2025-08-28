@@ -1,0 +1,44 @@
+{
+  "2025": [
+    { "name": "Jan", "current": 200, "previous": 300 },
+    { "name": "Feb", "current": 120, "previous": 180 },
+    { "name": "Mar", "current": 280, "previous": 200 },
+    { "name": "Apr", "current": 190, "previous": 320 },
+    { "name": "May", "current": 350, "previous": 270 },
+    { "name": "Jun", "current": 400, "previous": 290 },
+    { "name": "Jul", "current": 300, "previous": 200 },
+    { "name": "Aug", "current": 280, "previous": 310 },
+    { "name": "Sept", "current": 260, "previous": 350 },
+    { "name": "Oct", "current": 220, "previous": 300 },
+    { "name": "Nov", "current": 250, "previous": 210 },
+    { "name": "Dec", "current": 300, "previous": 370 }
+  ],
+  "2024": [
+    { "name": "Jan", "current": 300, "previous": 250 },
+    { "name": "Feb", "current": 180, "previous": 160 },
+    { "name": "Mar", "current": 200, "previous": 170 },
+    { "name": "Apr", "current": 320, "previous": 290 },
+    { "name": "May", "current": 270, "previous": 260 },
+    { "name": "Jun", "current": 290, "previous": 280 },
+    { "name": "Jul", "current": 200, "previous": 240 },
+    { "name": "Aug", "current": 310, "previous": 270 },
+    { "name": "Sept", "current": 350, "previous": 300 },
+    { "name": "Oct", "current": 300, "previous": 250 },
+    { "name": "Nov", "current": 210, "previous": 190 },
+    { "name": "Dec", "current": 370, "previous": 310 }
+  ],
+  "2023": [
+    { "name": "Jan", "current": 250, "previous": 100 },
+    { "name": "Feb", "current": 160, "previous": 120 },
+    { "name": "Mar", "current": 170, "previous": 160 },
+    { "name": "Apr", "current": 290, "previous": 200 },
+    { "name": "May", "current": 260, "previous": 240 },
+    { "name": "Jun", "current": 280, "previous": 270 },
+    { "name": "Jul", "current": 240, "previous": 210 },
+    { "name": "Aug", "current": 270, "previous": 230 },
+    { "name": "Sept", "current": 300, "previous": 200 },
+    { "name": "Oct", "current": 250, "previous": 180 },
+    { "name": "Nov", "current": 190, "previous": 190 },
+    { "name": "Dec", "current": 310, "previous": 220 }
+  ]
+}
