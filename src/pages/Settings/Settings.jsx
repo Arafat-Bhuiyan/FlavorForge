@@ -16,6 +16,10 @@ export const Settings = () => {
   const goToPolicy = () => {
     navigate("/privacy-policy");
   };
+
+  const handleSubscription = () => {
+    navigate("/subscription");
+  };
   return (
     <div className="max-w-4xl mx-auto my-10 p-6 bg-white rounded-lg shadow-md border border-[#E4572E]/25">
       <h1 className="text-3xl font-medium text-[#2E2E2E] text-start">
@@ -37,7 +41,10 @@ export const Settings = () => {
           <p>Sep 01 2025</p>
         </div>
         <div className="flex items-center justify-end">
-          <button className="p-3 bg-[#E4572E] rounded-lg text-white text-base font-medium mt-6">
+          <button
+            onClick={handleSubscription}
+            className="p-3 bg-[#E4572E] rounded-lg text-white text-base font-medium mt-6"
+          >
             Manage Subscription
           </button>
         </div>

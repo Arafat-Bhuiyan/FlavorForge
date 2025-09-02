@@ -6,9 +6,10 @@ export const Subscription = () => {
   const timeOptions = ["All", "Monthly", "Yearly"];
   const [users, setUsers] = useState([]);
   const [statusMap, setStatusMap] = useState({});
+  const [filter, setFilter] = useState("All"); // filter state
 
   useEffect(() => {
-    setUsers(usersData); // Load data from JSON
+    setUsers(usersData);
 
     // Initialize the statusMap with the users' current statuses
     const initialStatus = {};
@@ -16,23 +17,29 @@ export const Subscription = () => {
       initialStatus[user.id] = user.status;
     });
     setStatusMap(initialStatus);
-  }, [usersData]);
+  }, []);
 
   const handleSelect = (userId, option) => {
     setStatusMap((prevStatus) => ({
       ...prevStatus,
       [userId]: option,
     }));
-    // Call the toggleStatus function if necessary
-    // toggleStatus(userId, option);
   };
+
+  // filter করা হচ্ছে subPlan দিয়ে
+  const filteredUsers =
+    filter === "All" ? users : users.filter((user) => user.subPlan === filter);
 
   return (
     <div className="bg-[#FFFCF9]">
       <div className="flex justify-between items-center mb-7">
         <h1 className="font-medium text-xl">User Subscription Management</h1>
         <div className="flex items-center space-x-2 w-40">
-          <CustomDropdown options={timeOptions} defaultLabel="Filter" />
+          <CustomDropdown
+            options={timeOptions}
+            defaultLabel="Filter"
+            onSelect={(option) => setFilter(option)} // dropdown select করলে filter set হবে
+          />
         </div>
       </div>
 
@@ -59,7 +66,7 @@ export const Subscription = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id} className="bg-[#E4572E]/5 shadow-sm rounded-lg">
                 <td className="px-4 py-3 rounded-l-lg">{user.name}</td>
                 <td className="px-4 py-3">{user.subPlan}</td>
@@ -77,6 +84,13 @@ export const Subscription = () => {
                 </td>
               </tr>
             ))}
+            {filteredUsers.length === 0 && (
+              <tr>
+                <td colSpan={6} className="text-center py-4 text-gray-500">
+                  No users found for "{filter}"
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
