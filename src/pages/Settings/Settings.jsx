@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import vector from "../../assets/images/vector.png";
+import vector from "../../assets/images/Vector.png";
 import { Eye, EyeOff } from "lucide-react";
 
 export const Settings = () => {
