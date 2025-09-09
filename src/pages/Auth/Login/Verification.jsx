@@ -2,12 +2,16 @@ import { useState } from "react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
 import { NewPassword } from "./NewPassword";
+import publicApiInstance from "../../../utils/publicApiInstance";
+import { useNavigate } from "react-router-dom";
 
 export const Verification = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [isVerified, setIsVerified] = useState(false);
   const [showSetNewPass, setShowSetNewPass] = useState(false);
 
+  const email = localStorage.getItem("email");
+  const navigate = useNavigate("");
   // OTP change
   const handleOtpChange = (e, index) => {
     const value = e.target.value;
@@ -44,17 +48,26 @@ export const Verification = () => {
   };
 
   // OTP verify
-  const verifyOtp = (e) => {
+  const verifyOtp = async(e) => {
     e.preventDefault();
-    const otpString = otp.join("");
-    if (otpString === "1234") {
-      toast.success("OTP Verified Successfully!");
-      setIsVerified(true);
-      setOtp(["", "", "", ""]); // clear after success
-      setShowSetNewPass(!showSetNewPass);
-    } else {
-      toast.error("Invalid OTP. Please try again.");
+    console.log(otp);
+    const joinOtp = otp.join("");
+    try {
+      const res = await publicApiInstance.post("/verify-otp/",{
+        email,
+        otp:joinOtp,
+      })
+      console.log(res);
+      if(res.status === 200){
+        toast.success("OTP verified");
+        localStorage.setItem("otp",joinOtp);
+        setShowSetNewPass(true);
+
+      }
+    } catch (error) {
+      console.log(error)
     }
+
   };
   return (
     <div className="w-1/2">

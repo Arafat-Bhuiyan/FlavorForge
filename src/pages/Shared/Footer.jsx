@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "/FlavorForgeLogo.png";
+import { NavLink } from "react-router-dom";
 
 export const Footer = () => {
   return (
@@ -37,8 +38,8 @@ export const Footer = () => {
             © 2020 Lift flavorforge. All rights reserved
           </p>
           <div className="flex items-center gap-14 font-medium text-lg">
-            <p>Terms</p>
-            <p>Privacy</p>
+            <NavLink to="/terms&conditions">Terms</NavLink>
+            <NavLink to="/privacy-policy">Privacy</NavLink>
           </div>
         </div>
     </div>

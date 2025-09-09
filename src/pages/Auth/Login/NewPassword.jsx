@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import logo from "/public/FlavorForgeLogo.png";
 import { Success } from "./Success";
+import publicApiInstance from "../../../utils/publicApiInstance";
 
 export const NewPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,9 @@ export const NewPassword = () => {
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const email = localStorage.getItem("email");
+  const otp = localStorage.getItem("otp");
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -19,7 +23,7 @@ export const NewPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Password Regex → at least 8 chars, 1 uppercase, 1 number
@@ -37,13 +41,23 @@ export const NewPassword = () => {
       return;
     }
 
-    setError("");
-    toast.success("Password updated successfully");
-    setShowSuccess(!showSuccess);
-
-    // Clear inputs
-    setPassword("");
-    setConfirmPassword("");
+    try {
+      const res = await publicApiInstance.post("/reset-password/", {
+        email,
+        otp,
+        new_password: password,
+      });
+      setError("");
+      toast.success("Password updated successfully");
+      setShowSuccess(!showSuccess);
+      localStorage.clear("email");
+      localStorage.clear("otp");
+      // Clear inputs
+      setPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

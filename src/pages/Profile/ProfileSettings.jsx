@@ -1,14 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Edit2 } from "lucide-react";
 import profile from "../../assets/images/profile.png";
 import sms from "../../assets/images/sms.png";
 import camera from "../../assets/images/camera.png";
+import authApiInstance from "../../utils/privateApiInstance";
 
 const ProfileSettings = () => {
   const [fullName, setFullName] = useState("");
   const [gender, setGender] = useState("");
   const [language, setLanguage] = useState("");
   const [country, setCountry] = useState("");
+  const [genderChoices, setGenderChoices] = useState([]);
+  const [languageChoices, setLanguageChoices] = useState([]);
+  const [countryChoices, setCountryChoices] = useState([]);
+
+  // Fetch the choices from the API when the component mounts
+  useEffect(() => {
+    const fetchChoices = async () => {
+      try {
+        const res = await authApiInstance.get("/profile/fields/choices/");
+
+        if (res.status === 200) {
+          setGenderChoices(res.data.gender_choices);
+          setLanguageChoices(res.data.language_choices);
+          setCountryChoices(res.data.country_choices);
+        }
+      } catch (error) {
+        console.error("Error fetching profile choices:", error);
+      }
+    };
+
+    fetchChoices();
+  }, []);
 
   return (
     <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
@@ -36,9 +59,7 @@ const ProfileSettings = () => {
       {/* Form */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-[#2E2E2E] text-base mb-2">
-            Full Name
-          </label>
+          <label className="block text-[#2E2E2E] text-base mb-2">Full Name</label>
           <input
             type="text"
             value={fullName}
@@ -52,27 +73,29 @@ const ProfileSettings = () => {
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E]  rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">What is your gender?</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
+            {genderChoices.map((choice, index) => (
+              <option key={index} value={choice[0]}>
+                {choice[1]}
+              </option>
+            ))}
           </select>
         </div>
         <div>
-          <label className="block text-[#2E2E2E] text-base mb-2">
-            Language
-          </label>
+          <label className="block text-[#2E2E2E] text-base mb-2">Language</label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
             className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">Select your language</option>
-            <option value="english">English</option>
-            <option value="spanish">Spanish</option>
-            <option value="french">French</option>
+            {languageChoices.map((choice, index) => (
+              <option key={index} value={choice[0]}>
+                {choice[1]}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -83,16 +106,18 @@ const ProfileSettings = () => {
             className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           >
             <option value="">Select your country</option>
-            <option value="usa">USA</option>
-            <option value="uk">UK</option>
-            <option value="canada">Canada</option>
+            {countryChoices.map((choice, index) => (
+              <option key={index} value={choice[0]}>
+                {choice[1]}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
       {/* Email Section */}
       <div className="space-y-4">
-        <h3 className="font-medium  text-[#2E2E2E]">My email Address</h3>
+        <h3 className="font-medium text-[#2E2E2E]">My email Address</h3>
         <div className="flex items-center gap-3 text-sm">
           <div className="w-12 h-12 bg-[#E4572E]/30 flex items-center justify-center rounded-full">
             <img src={sms} className="w-6 h-6" alt="" />

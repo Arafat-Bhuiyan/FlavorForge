@@ -2,13 +2,15 @@ import { useState } from "react";
 import logo from "/public/FlavorForgeLogo.png";
 import foodBot from "../../../assets/images/food-bot.png";
 import { Verification } from "./Verification";
+import publicApiInstance from "../../../utils/publicApiInstance";
+import { toast } from "react-toastify";
 
 export const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [showVerification, setShowVerification] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Email regex
@@ -18,9 +20,20 @@ export const ForgetPassword = () => {
       setError("Invalid email format");
       return;
     }
-
-    setError("");
-    setShowVerification(!showVerification);
+    try {
+      const { data, status } = await publicApiInstance.post("/send-otp/", {
+        email,
+      });
+      console.log(data);
+      if (status === 200) {
+        localStorage.setItem("email",email);
+        setError("");
+        setShowVerification(!showVerification);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
   };
 
   return (

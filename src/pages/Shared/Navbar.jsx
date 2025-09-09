@@ -16,7 +16,9 @@ export const Navbar = () => {
   return (
     <div className="pb-16">
       <div className="flex justify-between items-center">
-        <img src={logo} alt="" className="w-16 h-14" />
+        <NavLink to="/">
+          <img src={logo} alt="" className="w-16 h-14" />
+        </NavLink>
 
         <div className="flex gap-10 font-medium text-lg items-center">
           <NavLink
@@ -73,7 +75,10 @@ export const Navbar = () => {
                   ></path>
                 </svg>
               </div>
-              <button onClick={logout} className="bg-[#FFF8EA] border border-[#E4572E]/40 p-3 rounded-full">
+              <button
+                onClick={logout}
+                className="bg-[#FFF8EA] border border-[#E4572E]/40 p-3 rounded-full"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}

@@ -14,6 +14,7 @@ import Policy from "../pages/Settings/Policy";
 import DashboardMainPage from "../Admin/Dashboard/DashboardMainPage";
 import AdminLogin from "../Admin/Auth/AdminLogin";
 import ProtectedRoute from "../Admin/Auth/ProtectedRoute";
+import ProtectedRouteUser from "../pages/Auth/Login/ProtectedRouteUser";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile-settings",
-        element: <ProfileSettings />,
+         element: (
+          <ProtectedRouteUser>
+            <ProfileSettings />
+          </ProtectedRouteUser>
+        ),
       },
       {
         path: "/popular-recipe",
@@ -63,15 +68,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/settings",
-        element: <Settings />,
+        element: (
+          <ProtectedRouteUser>
+            <Settings />
+          </ProtectedRouteUser>
+        ),
       },
       {
         path: "/terms&conditions",
-        element: <Terms />,
+        element: (
+          <ProtectedRouteUser>
+            <Terms />
+          </ProtectedRouteUser>
+        ),
       },
       {
         path: "/privacy-policy",
-        element: <Policy />,
+        element: (
+          <ProtectedRouteUser>
+            <Policy />
+          </ProtectedRouteUser>
+        ),
       },
     ],
   },

@@ -1,37 +1,42 @@
 import { useEffect, useState } from "react";
+import publicApiInstance from "../../utils/publicApiInstance";
 
-export const Policy = () => {
-  const [policy, setPolicy] = useState([]);
+
+export const Terms = () => {
+  const [terms, setTerms] = useState("");
 
   useEffect(() => {
-    fetch("/policy.json")
-      .then((res) => res.json())
-      .then((data) => setPolicy(data))
-      .catch((err) => console.error("Error loading policy:", err));
+    const fetchTerms = async () => {
+      try {
+        const { data, status } = await publicApiInstance.get("/privacy-policy/");
+        console.log(data); // Useful for debugging
+        console.log(status); // Useful for debugging
+        setTerms(data?.content); // Assuming data.content is the HTML string
+      } catch (error) {
+        console.log("Error fetching terms:", error);
+      }
+    };
+
+    fetchTerms(); // Fetching data when the component mounts
   }, []);
 
   return (
     <div className="w-full p-8 flex flex-col justify-center items-center gap-10">
-      <h1 className="font-semibold text-3xl text-[#E4572E]">Privacy Policy</h1>
+      <h1 className="font-semibold text-3xl text-[#E4572E]">Privacy & Policy</h1>
 
       <div className="w-full">
-        <ol className="list-decimal pl-5 space-y-6 text-2xl font-medium">
-          {policy.map((item) => (
-            <li key={item.id}>
-              <h2 className="mb-2">{item.title}</h2>
-
-              <ul className="list-disc pl-6 text-xl font-normal space-y-2">
-                {Array.isArray(item.content) ? (
-                  item.content.map((point, i) => <li key={i}>{point}</li>)
-                ) : (
-                  <li>{item.content}</li>
-                )}
-              </ul>
-            </li>
-          ))}
-        </ol>
+        {/* Render the terms using dangerouslySetInnerHTML */}
+        {terms ? (
+          <div
+            className="text-xl font-medium"
+            dangerouslySetInnerHTML={{ __html: terms }}
+          />
+        ) : (
+          <p>Loading policy...</p> // Show a loading message if terms are not yet loaded
+        )}
       </div>
     </div>
   );
 };
-export default Policy;
+
+export default Terms;

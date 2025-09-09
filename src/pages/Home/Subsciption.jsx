@@ -86,15 +86,15 @@ const Subscription = () => {
             <div className="flex-1">
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-lg text-[#E4572E] font-semibold">
+                  <div className="text-lg text-[#E4572E] font-semibold">
                     Yearly Plan{" "}
                     <span className="text-[#2E2E2E] text-base font-medium">
                       (Best Value — Save 20%)
                     </span>
-                    <p className="text-[#2E2E2E] text-base font-normal">
+                    <div className="text-[#2E2E2E] text-base font-normal">
                       $66.99 / year (equivalent to $5.59 / month)
-                    </p>
-                  </p>
+                    </div>
+                  </div>
                 </div>
                 <p className="text-3xl font-semibold text-[#E4572E]">
                   Save 20%

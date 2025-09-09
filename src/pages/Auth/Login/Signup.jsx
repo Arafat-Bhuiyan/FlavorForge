@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import publicApiInstance from "../../../utils/publicApiInstance";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +20,7 @@ export default function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Email Regex
@@ -44,13 +45,24 @@ export default function Signup() {
       return;
     }
 
-    setError("");
-    toast.success("Signup successful");
+    try {
+      const res = await publicApiInstance.post("/sign-up/", {
+        email,
+        password,
+        confirmPassword,
+      });
+      console.log(res);
+      setError("");
+      toast.success("Signup successful");
 
-    // Input fields clear
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+      // Input fields clear
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      toast.error(error);
+      console.log(error);
+    }
   };
 
   return (

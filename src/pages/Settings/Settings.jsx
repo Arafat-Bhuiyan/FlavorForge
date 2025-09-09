@@ -2,24 +2,41 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import vector from "../../assets/images/Vector.png";
 import { Eye, EyeOff } from "lucide-react";
+import authApiInstance from "../../utils/privateApiInstance";
+import { toast } from "react-toastify";
 
 export const Settings = () => {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [openSection, setOpenSection] = useState(null);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
-  const goToTerms = () => {
-    navigate("/terms&conditions");
+  const goToTerms = () => navigate("/terms&conditions");
+  const goToPolicy = () => navigate("/privacy-policy");
+  const handleSubscription = () => navigate("/subscription");
+
+  const UpdatePassword = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await authApiInstance.put("/update-password/", {
+        old_password: currentPassword,
+        new_password: newPassword,
+      });
+
+      if (res.status === 200) {
+        toast.success("Password Updated");
+        setCurrentPassword("");
+        setNewPassword("");
+
+      }
+    } catch (error) {
+      toast.error("Password Update Failed. Try again.");
+      console.log(error);
+    }
   };
 
-  const goToPolicy = () => {
-    navigate("/privacy-policy");
-  };
-
-  const handleSubscription = () => {
-    navigate("/subscription");
-  };
   return (
     <div className="max-w-4xl mx-auto my-10 p-6 bg-white rounded-lg shadow-md border border-[#E4572E]/25">
       <h1 className="text-3xl font-medium text-[#2E2E2E] text-start">
@@ -60,7 +77,7 @@ export const Settings = () => {
             setOpenSection(openSection === "password" ? null : "password")
           }
           className={`flex items-center justify-between text-lg cursor-pointer 
-        bg-[#FFFDFD] border border-[#E4572E]/35 p-2 rounded-lg`}
+  bg-[#FFFDFD] border border-[#E4572E]/35 p-2 rounded-lg`}
         >
           <p>Change Password</p>
           <svg
@@ -78,17 +95,23 @@ export const Settings = () => {
             />
           </svg>
         </div>
+
         {openSection === "password" && (
           <div className="p-4 bg-white border border-[#E4572E]/20 mb-4">
             <h1 className="font-medium text-base">Change Your Password</h1>
-            <div className="max-w-2xl mx-auto mt-4 text-[#2E2E2E]">
-              {/* Change Password Form */}
+            <form
+              onSubmit={UpdatePassword}
+              className="max-w-2xl mx-auto mt-4 text-[#2E2E2E]"
+            >
+              {/* Current Password */}
               <label className="block mb-2 font-medium text-sm">
                 Current Password
               </label>
               <div className="relative mb-4">
                 <input
                   type={showCurrent ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   className="w-full border border-[#F2C7BB] p-2 rounded-lg"
                 />
                 <button
@@ -104,12 +127,15 @@ export const Settings = () => {
                 </button>
               </div>
 
+              {/* New Password */}
               <label className="block mb-2 font-medium text-sm">
                 New Password
               </label>
               <div className="relative mb-5">
                 <input
                   type={showNew ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full border border-[#F2C7BB] p-2 rounded-lg"
                 />
                 <button
@@ -125,12 +151,16 @@ export const Settings = () => {
                 </button>
               </div>
 
+              {/* Submit */}
               <div className="flex justify-center">
-                <button className="w-[614px] bg-[#E4572E] text-white py-2 rounded-lg font-medium text-lg">
+                <button
+                  type="submit"
+                  className="w-[614px] bg-[#E4572E] text-white py-2 rounded-lg font-medium text-lg"
+                >
                   Confirm New Password
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         )}
 

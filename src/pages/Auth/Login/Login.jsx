@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import profile from "../../../assets/images/profile.png"
+import profile from "../../../assets/images/profile.png";
+import publicApiInstance from "../../../utils/publicApiInstance";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +19,7 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Email regex
@@ -38,19 +39,34 @@ export default function Login() {
       return;
     }
 
-    setError("");
-    toast.success("Login successful");
+    try {
+      const { data, status } = await publicApiInstance.post("/login/", {
+        email,
+        password,
+      });
+      console.log(data);
+      console.log(status);
+      if (status === 200) {
+        localStorage.setItem("access_token", data?.access);
+        localStorage.setItem("refresh_token", data?.refresh);
+        setError("");
+        toast.success("Login successful");
 
-    login({
-      name: "Sarif",
-      email,
-      photoURL: profile,
-    });
+        login({
+          name: "Sarif",
+          email,
+          photoURL: profile,
+        });
 
-    // Input fields clear
-    setEmail("");
-    setPassword("");
-    navigate("/");
+        // Input fields clear
+        setEmail("");
+        setPassword("");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error",error?.response?.data?.error);
+      toast.error(error?.response?.data?.error[0]);
+    }
   };
 
   return (
