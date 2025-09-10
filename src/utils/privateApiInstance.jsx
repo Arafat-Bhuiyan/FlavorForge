@@ -31,7 +31,6 @@ authApiInstance.interceptors.request.use(
       if (status === 200 && data?.access) {
         // Update tokens in localStorage
         localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
 
         // Update request with new access token
         req.headers.Authorization = `Bearer ${data.access}`;

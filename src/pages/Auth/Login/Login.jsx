@@ -21,10 +21,8 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Email regex
+    // ইমেইল ও পাসওয়ার্ড যাচাই
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Password regex: min 8 chars, 1 uppercase, 1 number
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     if (!emailRegex.test(email)) {
@@ -44,11 +42,11 @@ export default function Login() {
         email,
         password,
       });
-      console.log(data);
-      console.log(status);
+
       if (status === 200) {
         localStorage.setItem("access_token", data?.access);
         localStorage.setItem("refresh_token", data?.refresh);
+
         setError("");
         toast.success("Login successful");
 
@@ -58,13 +56,12 @@ export default function Login() {
           photoURL: profile,
         });
 
-        // Input fields clear
         setEmail("");
         setPassword("");
-        navigate("/");
+        navigate("/"); // Redirection after login
       }
     } catch (error) {
-      console.log("error",error?.response?.data?.error);
+      console.log("error", error?.response?.data?.error);
       toast.error(error?.response?.data?.error[0]);
     }
   };

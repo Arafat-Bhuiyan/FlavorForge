@@ -4,6 +4,7 @@ import profile from "../../assets/images/profile.png";
 import sms from "../../assets/images/sms.png";
 import camera from "../../assets/images/camera.png";
 import authApiInstance from "../../utils/privateApiInstance";
+import { toast } from "react-toastify";
 
 const ProfileSettings = () => {
   const [fullName, setFullName] = useState("");
@@ -13,6 +14,8 @@ const ProfileSettings = () => {
   const [genderChoices, setGenderChoices] = useState([]);
   const [languageChoices, setLanguageChoices] = useState([]);
   const [countryChoices, setCountryChoices] = useState([]);
+  const [email, setEmail] = useState([]);
+
 
   // Fetch the choices from the API when the component mounts
   useEffect(() => {
@@ -29,10 +32,42 @@ const ProfileSettings = () => {
         console.error("Error fetching profile choices:", error);
       }
     };
+    const fetchProfileData = async () => {
+      try {
+        const res = await authApiInstance.get("/profile/");
+        if (res.status === 200) {
+          const profile = res.data;
+          setFullName(profile?.full_name || "Not set yet");
+          setGender(profile?.gender || "");
+          setLanguage(profile?.language || "");
+          setCountry(profile?.country || "");
+          setEmail(profile?.email || "");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
+
 
     fetchChoices();
+    fetchProfileData();
   }, []);
 
+
+    const updateProfileData = async() =>{
+      try {
+        const res = await authApiInstance.patch("/profile/",{
+          full_name:fullName,
+        })
+        if (res.status===200){
+          toast.success("Profile updated")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
   return (
     <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
       {/* Header */}
@@ -45,10 +80,14 @@ const ProfileSettings = () => {
               className="w-full h-full object-cover"
             />
           </div>
-          <img src={camera} alt="profile" className="absolute left-11 top-10 w-8 h-7" />
+          <img
+            src={camera}
+            alt="profile"
+            className="absolute left-11 top-10 w-8 h-7"
+          />
           <div>
-            <h2 className="text-[#2E2E2E] font-medium text-lg">Alex Rawls</h2>
-            <p className="text-[#2E2E2E]/50 text-sm">alexrawls@gmail.com</p>
+            <h2 className="text-[#2E2E2E] font-medium text-lg">{fullName}</h2>
+            <p className="text-[#2E2E2E]/50 text-sm">{email}</p>
           </div>
         </div>
         <button className="bg-[#E4572E] text-white px-4 py-2 rounded-lg flex items-center gap-2">
@@ -59,11 +98,16 @@ const ProfileSettings = () => {
       {/* Form */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-[#2E2E2E] text-base mb-2">Full Name</label>
+          <label className="block text-[#2E2E2E] text-base mb-2">
+            Full Name
+          </label>
           <input
             type="text"
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(e) => {
+              setFullName(e.target.value)
+              console.log(fullName);
+            }}
             placeholder="Your First Name"
             className="w-full border border-[#2E2E2E]/20 placeholder:text-[#2E2E2E]/50 text-[#2E2E2E] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
           />
@@ -84,7 +128,9 @@ const ProfileSettings = () => {
           </select>
         </div>
         <div>
-          <label className="block text-[#2E2E2E] text-base mb-2">Language</label>
+          <label className="block text-[#2E2E2E] text-base mb-2">
+            Language
+          </label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
@@ -123,7 +169,7 @@ const ProfileSettings = () => {
             <img src={sms} className="w-6 h-6" alt="" />
           </div>
           <div>
-            <p className="text-sm">alexrawls@gmail.com</p>
+            <p className="text-sm">{email}</p>
             <p className="text-[#2E2E2E]/50 text-sm">1 month ago</p>
           </div>
         </div>
@@ -132,7 +178,7 @@ const ProfileSettings = () => {
           <button className="bg-[#FFE3D5] text-[#E4572E] text-sm w-52 h-10 rounded-lg">
             +Add Email Address
           </button>
-          <button className="bg-[#E4572E] text-white w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base">
+          <button onClick={updateProfileData} className="bg-[#E4572E] text-white w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base">
             Save
           </button>
         </div>

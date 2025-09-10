@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import * as jwt_decode from "jwt-decode";
 
 // Check if the access token is expired
