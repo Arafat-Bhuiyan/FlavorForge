@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
@@ -6,15 +6,15 @@ import { data, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import profile from "../../../assets/images/profile.png";
 import publicApiInstance from "../../../utils/publicApiInstance";
+import { MyContext } from "../../../context/context";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth();
   const navigate = useNavigate();
-
+  const { login } = useContext(MyContext);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -36,34 +36,12 @@ export default function Login() {
       );
       return;
     }
-
-    try {
-      const { data, status } = await publicApiInstance.post("/login/", {
-        email,
-        password,
-      });
-
-      if (status === 200) {
-        localStorage.setItem("access_token", data?.access);
-        localStorage.setItem("refresh_token", data?.refresh);
-
-        setError("");
-        toast.success("Login successful");
-
-        login({
-          name: "Sarif",
-          email,
-          photoURL: profile,
-        });
-
-        setEmail("");
-        setPassword("");
-        navigate("/"); // Redirection after login
-      }
-    } catch (error) {
-      console.log("error", error?.response?.data?.error);
-      toast.error(error?.response?.data?.error[0]);
-    }
+    const data = login(email, password);
+    console.log(data);
+    setError("");
+    setEmail("");
+    setPassword("");
+    navigate("/");
   };
 
   return (

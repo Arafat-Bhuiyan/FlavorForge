@@ -1,55 +1,89 @@
 import axios from "axios";
 import publicApiInstance from "./publicApiInstance";
 import { toast } from "react-toastify";
-import { isAccessTokenExpired } from "./useAuth";
+import jwtDecode from "jwt-decode";
+
+export const isAccessTokenExpired = (access_token) => {
+  if (!access_token) return true; // no token means expired
+
+  try {
+    const decodedToken = jwtDecode(access_token);
+   
+    // decodedToken.exp is in seconds, Date.now() gives ms
+    return decodedToken.exp <= Math.floor(Date.now() / 1000);
+  } catch (error) {
+    console.error("JWT Decode failed:", error);
+    return true; // treat as expired if invalid
+  }
+};
 
 const authApiInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+// Helper function to refresh tokens
+const refreshTokens = async () => {
+  const refresh_token = localStorage.getItem("refresh_token");
+
+  if (!refresh_token) return null;
+
+  try {
+    const { data, status } = await publicApiInstance.post("/get/new/token/", {
+      refresh: refresh_token,
+    });
+
+    if (status === 200 && data?.access) {
+      console.log("Token refreshed successfully");
+      localStorage.setItem("access_token", data.access);
+      return data.access;
+    } else {
+      throw new Error("Failed to refresh token.");
+    }
+  } catch (error) {
+    console.error("Session expired. Refresh failed:", error);
+    localStorage.clear(); // clear storage on failure
+    window.location.href = "/login";
+    return null;
+  }
+};
+
+// Add request interceptor
 authApiInstance.interceptors.request.use(
   async (req) => {
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    let access_token = localStorage.getItem("access_token");
 
-    // If we have an access token, add it to request header
-    if (access_token) {
+    // Only refresh token if expired
+    if (isAccessTokenExpired(access_token)) {
+      console.warn("Access token expired, refreshing...");
+
+      // Try to refresh the token
+      access_token = await refreshTokens();
+
+      if (access_token) {
+        req.headers.Authorization = `Bearer ${access_token}`;
+      }
+    } else {
       req.headers.Authorization = `Bearer ${access_token}`;
     }
 
-    // Check if the access token is expired
-    if (!isAccessTokenExpired()) {
-      return req;
-    }
-
-    try {
-      // Refresh the token
-      const { data, status } = await publicApiInstance.post("/get/new/token/", {
-        refresh: refresh_token,
-      });
-
-      if (status === 200 && data?.access) {
-        // Update tokens in localStorage
-        localStorage.setItem("access_token", data.access);
-
-        // Update request with new access token
-        req.headers.Authorization = `Bearer ${data.access}`;
-        return req;
-      } else {
-        // Handle failure to refresh tokens
-        throw new Error("Failed to refresh token.");
-      }
-    } catch (error) {
-      toast.error("Session expired. Please log in again.");
-      // Reject the request, triggering a logout (or redirect to login)
-      // You can also dispatch a logout action or redirect to login page
-      window.location.href = "/login";  // Forcing redirection to login page
-      return Promise.reject(error); // Reject the request to stop the API call
-    }
+    return req;
   },
-  (error) => {
-    return Promise.reject(error); // Reject in case of a request error
-  }
+  (error) => Promise.reject(error)
 );
+
+// Check if user is logged in when the app mounts (initial page load)
+export const checkAuthOnLoad = async () => {
+  const access_token = localStorage.getItem("access_token");
+  
+  if (access_token && !isAccessTokenExpired(access_token)) {
+    // Access token is valid, continue with the user logged in
+    return true;
+  }
+
+  // If no access token or expired, attempt to refresh
+  const newAccessToken = await refreshTokens();
+
+  return !!newAccessToken; // returns true if new token was obtained
+};
 
 export default authApiInstance;

@@ -3,7 +3,8 @@ import logo from "/FlavorForgeLogo.png";
 import profile from "../../assets/images/profile.png";
 import { useAuth } from "../Auth/Login/AuthContext";
 import { Settings } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { MyContext } from "../../context/context";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -12,12 +13,17 @@ export const Navbar = () => {
 
   const goToProfileSetting = () => navigate("/profile-settings");
   const goToSettings = () => navigate("/settings");
-  const { user, logout } = useAuth();
-
+  const { user,logout,profile } = useContext(MyContext);
+  const access_token = localStorage.getItem("access_token");
   // Initialize userState with `user` from AuthContext
   const [userState, setUserState] = useState(user);
 
-  // Update userState whenever `user` changes
+  const handleLogout = () =>{
+    logout();
+    navigate("/");
+  }
+
+  // Update user State whenever `user` changes
   useEffect(() => {
     setUserState(user);
   }, [user]);  // This will run whenever `user` from AuthContext changes
@@ -57,11 +63,11 @@ export const Navbar = () => {
         </div>
 
         <div className="flex gap-3 font-medium text-base items-center">
-          {userState ? (
+          {access_token ? (
             <div className="flex items-center gap-4">
               <div onClick={goToProfileSetting} className="cursor-pointer">
                 <img
-                  src={userState.photoURL || profile}
+                  src={profile?.image_url || profile}
                   alt="profile"
                   className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
                 />
@@ -73,7 +79,7 @@ export const Navbar = () => {
                 <Settings />
               </div>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-[#FFF8EA] border border-[#E4572E]/40 p-3 rounded-full"
               >
                 <svg
