@@ -1,9 +1,9 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import logo from "/FlavorForgeLogo.png";
 import profile from "../../assets/images/profile.png";
-import { useAuth } from "../Auth/Login/AuthContext";
 import { Settings } from "lucide-react";
-import { useState, useEffect } from "react";
+import { MyContext } from "../../Provider/Provider";
+import { useContext } from "react";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -12,15 +12,10 @@ export const Navbar = () => {
 
   const goToProfileSetting = () => navigate("/profile-settings");
   const goToSettings = () => navigate("/settings");
-  const { user, logout } = useAuth();
+  const { user,logout } = useContext(MyContext);
 
-  // Initialize userState with `user` from AuthContext
-  const [userState, setUserState] = useState(user);
+  console.log(user)
 
-  // Update userState whenever `user` changes
-  useEffect(() => {
-    setUserState(user);
-  }, [user]);  // This will run whenever `user` from AuthContext changes
 
   return (
     <div className="pb-16">
@@ -57,11 +52,11 @@ export const Navbar = () => {
         </div>
 
         <div className="flex gap-3 font-medium text-base items-center">
-          {userState ? (
+          {user ? (
             <div className="flex items-center gap-4">
               <div onClick={goToProfileSetting} className="cursor-pointer">
                 <img
-                  src={userState.photoURL || profile}
+                  src={user?.image_url}
                   alt="profile"
                   className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
                 />
