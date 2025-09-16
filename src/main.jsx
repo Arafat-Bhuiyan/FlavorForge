@@ -11,10 +11,8 @@ import { MyProvider } from "./Provider/Provider.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <MyProvider>
-      <AuthProvider>
-        <ToastContainer autoClose={3000} />
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <ToastContainer autoClose={3000} />
+      <RouterProvider router={router} />
     </MyProvider>
   </StrictMode>
 );

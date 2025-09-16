@@ -3,7 +3,7 @@ import logo from "/FlavorForgeLogo.png";
 import profile from "../../assets/images/profile.png";
 import { Settings } from "lucide-react";
 import { MyContext } from "../../Provider/Provider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -12,11 +12,15 @@ export const Navbar = () => {
 
   const goToProfileSetting = () => navigate("/profile-settings");
   const goToSettings = () => navigate("/settings");
-  const { user,logout } = useContext(MyContext);
+  const { user, logout } = useContext(MyContext);
 
-  console.log(user)
+  if (user) {
+    console.log(user);
+  }
 
-
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   return (
     <div className="pb-16">
       <div className="flex justify-between items-center">

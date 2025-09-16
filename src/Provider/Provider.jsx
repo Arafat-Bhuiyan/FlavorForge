@@ -21,7 +21,7 @@ export const MyProvider = ({ children }) => {
 
       if (status === 200) {
         localStorage.setItem("access_token", data?.access);
-        localStorage.setItem("refresh", data?.refresh);
+        localStorage.setItem("refresh_token", data?.refresh);
         localStorage.setItem("user", JSON.stringify(data?.user));
       } else {
         setError("Login failed. Please check your credentials.");
@@ -42,7 +42,9 @@ export const MyProvider = ({ children }) => {
 
   useEffect (()=>{
     const loggedInUser = localStorage.getItem("user");
-    setUser(loggedInUser);
+    if(loggedInUser){
+      setUser(JSON.stringify(loggedInUser));
+    }
   },[])
   return (
     <MyContext.Provider value={{ user,setUser, login, loading, error,logout }}>
