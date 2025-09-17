@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Edit2 } from "lucide-react";
 import profile from "../../assets/images/profile.png";
 import sms from "../../assets/images/sms.png";
 import camera from "../../assets/images/camera.png";
 import authApiInstance from "../../utils/privateApiInstance";
 import { toast } from "react-toastify";
+import { MyContext } from "../../Provider/Provider";
 
 const ProfileSettings = () => {
   const [fullName, setFullName] = useState("");
@@ -15,7 +16,44 @@ const ProfileSettings = () => {
   const [languageChoices, setLanguageChoices] = useState([]);
   const [countryChoices, setCountryChoices] = useState([]);
   const [email, setEmail] = useState([]);
+  const { user, setUser } = useContext(MyContext);
 
+  // file input ref
+  const fileInputRef = useRef(null);
+
+  // ক্যামেরা আইকন ক্লিক করলে ফাইল ইনপুট ওপেন হবে
+  const handleCameraClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // ফাইল আপলোড লজিক
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const res = await authApiInstance.patch("/profile/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.status === 200) {
+        const updatedUser = {
+          ...user,
+          image_url: res.data.image_url, // ✅ backend থেকে পাওয়া নতুন url
+        };
+
+        setUser(updatedUser); // context আপডেট
+        localStorage.setItem("user", JSON.stringify(updatedUser)); // localStorage আপডেট
+        toast.success("Profile picture updated!");
+      }
+    } catch (error) {
+      console.log("Image upload error:", error);
+      toast.error("Failed to upload image");
+    }
+  };
 
   // Fetch the choices from the API when the component mounts
   useEffect(() => {
@@ -48,26 +86,37 @@ const ProfileSettings = () => {
       }
     };
 
-
-
-
     fetchChoices();
     fetchProfileData();
   }, []);
 
-
-    const updateProfileData = async() =>{
-      try {
-        const res = await authApiInstance.patch("/profile/",{
-          full_name:fullName,
-        })
-        if (res.status===200){
-          toast.success("Profile updated")
-        }
-      } catch (error) {
-        console.log(error)
+  const updateProfileData = async () => {
+    try {
+      const res = await authApiInstance.patch("/profile/", {
+        full_name: fullName,
+        gender: gender,
+        language: language,
+        country: country,
+      });
+      if (res.status === 200) {
+        toast.success("Profile updated");
       }
+
+      // ✅ Context এবং LocalStorage আপডেট করো
+      const updatedUser = {
+        ...user,
+        full_name: fullName,
+        gender: gender,
+        language: language,
+        country: country,
+      };
+
+      setUser(updatedUser); // context আপডেট
+      localStorage.setItem("user", JSON.stringify(updatedUser)); // localStorage আপডেট
+    } catch (error) {
+      console.log(error);
     }
+  };
   return (
     <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
       {/* Header */}
@@ -75,16 +124,29 @@ const ProfileSettings = () => {
         <div className="flex items-center gap-4 relative">
           <div className="w-16 h-16 rounded-full overflow-hidden">
             <img
-              src={profile}
+              src={user?.image_url || profile}
               alt="profile"
               className="w-full h-full object-cover"
             />
           </div>
+
+          {/* Hidden File Input */}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+          />
+
+          {/* Camera Icon */}
           <img
             src={camera}
-            alt="profile"
-            className="absolute left-11 top-10 w-8 h-7"
+            alt="upload"
+            className="absolute left-11 top-10 w-8 h-7 cursor-pointer"
+            onClick={handleCameraClick}
           />
+
           <div>
             <h2 className="text-[#2E2E2E] font-medium text-lg">{fullName}</h2>
             <p className="text-[#2E2E2E]/50 text-sm">{email}</p>
@@ -105,7 +167,7 @@ const ProfileSettings = () => {
             type="text"
             value={fullName}
             onChange={(e) => {
-              setFullName(e.target.value)
+              setFullName(e.target.value);
               console.log(fullName);
             }}
             placeholder="Your First Name"
@@ -178,7 +240,10 @@ const ProfileSettings = () => {
           <button className="bg-[#FFE3D5] text-[#E4572E] text-sm w-52 h-10 rounded-lg">
             +Add Email Address
           </button>
-          <button onClick={updateProfileData} className="bg-[#E4572E] text-white w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base">
+          <button
+            onClick={updateProfileData}
+            className="bg-[#E4572E] text-white w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base"
+          >
             Save
           </button>
         </div>

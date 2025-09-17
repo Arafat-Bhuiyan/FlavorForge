@@ -17,17 +17,45 @@ export const MyProvider = ({ children }) => {
         email,
         password,
       });
+
       console.log("login Data", data);
 
       if (status === 200) {
         localStorage.setItem("access_token", data?.access);
         localStorage.setItem("refresh_token", data?.refresh);
         localStorage.setItem("user", JSON.stringify(data?.user));
+        setUser(data?.user);
       } else {
         setError("Login failed. Please check your credentials.");
       }
     } catch (error) {
+      console.error(error);
       setError("An error occurred during login. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signup = async ({ email, password, confirmPassword }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, status } = await publicApiInstance.post("/sign-up/", {
+        email,
+        password,
+        confirmPassword,
+      });
+
+      // Optionally store tokens & user if API returns them
+      if (status === 201) {
+        localStorage.setItem("access_token", data?.access);
+        localStorage.setItem("refresh_token", data?.refresh);
+        localStorage.setItem("user", JSON.stringify(data?.user));
+        setUser(data?.user);
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Signup failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -40,14 +68,17 @@ export const MyProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  useEffect (()=>{
+  useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
-    if(loggedInUser){
-      setUser(JSON.stringify(loggedInUser));
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
     }
-  },[])
+  }, []);
+
   return (
-    <MyContext.Provider value={{ user,setUser, login, loading, error,logout }}>
+    <MyContext.Provider
+      value={{ user, setUser, login, loading, error, logout, signup }}
+    >
       {children}
     </MyContext.Provider>
   );

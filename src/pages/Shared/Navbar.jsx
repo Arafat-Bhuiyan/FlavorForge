@@ -1,6 +1,5 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import logo from "/FlavorForgeLogo.png";
-import profile from "../../assets/images/profile.png";
 import { Settings } from "lucide-react";
 import { MyContext } from "../../Provider/Provider";
 import { useContext, useEffect } from "react";
@@ -60,7 +59,7 @@ export const Navbar = () => {
             <div className="flex items-center gap-4">
               <div onClick={goToProfileSetting} className="cursor-pointer">
                 <img
-                  src={user?.image_url}
+                  src={user?.image_url || "https://i.ibb.co.com/cK8Kz98s/da7ed7b0-5f66-4f97-a610-51100d3b9fd2.jpg" }
                   alt="profile"
                   className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
                 />
