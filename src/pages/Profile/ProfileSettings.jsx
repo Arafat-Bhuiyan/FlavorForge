@@ -6,6 +6,7 @@ import camera from "../../assets/images/camera.png";
 import authApiInstance from "../../utils/privateApiInstance";
 import { toast } from "react-toastify";
 import { MyContext } from "../../Provider/Provider";
+import { formatDistanceToNow } from "date-fns";
 
 const ProfileSettings = () => {
   const [fullName, setFullName] = useState("");
@@ -16,7 +17,11 @@ const ProfileSettings = () => {
   const [languageChoices, setLanguageChoices] = useState([]);
   const [countryChoices, setCountryChoices] = useState([]);
   const [email, setEmail] = useState([]);
+  const [emails, setEmails] = useState([]); // ✅ email list রাখার জন্য
+  const [newEmail, setNewEmail] = useState("");
+  const [showEmailInput, setShowEmailInput] = useState(false);
   const { user, setUser } = useContext(MyContext);
+  console.log("emails:", emails)
 
   // file input ref
   const fileInputRef = useRef(null);
@@ -55,12 +60,29 @@ const ProfileSettings = () => {
     }
   };
 
-  // Fetch the choices from the API when the component mounts
+  // ✅ emails সবসময় আলাদা endpoint থেকে আনো
+  const fetchEmails = async () => {
+    try {
+      const res = await authApiInstance.get("/user/emails/");
+      if (res.status === 200) {
+        const allEmails =
+          res.data?.map((em) => ({
+            email: em.email,
+            addedAt: em.added_at ? new Date(em.added_at) : null,
+          })) || [];
+        setEmails(allEmails[0].email);
+        console.log("Fetched emails:", allEmails[0].email);
+      }
+    } catch (error) {
+      console.log("Emails fetch error:", error);
+    }
+  };
+
+  // ✅ useEffect এর ভিতরে সব fetch
   useEffect(() => {
     const fetchChoices = async () => {
       try {
         const res = await authApiInstance.get("/profile/fields/choices/");
-
         if (res.status === 200) {
           setGenderChoices(res.data.gender_choices);
           setLanguageChoices(res.data.language_choices);
@@ -70,6 +92,7 @@ const ProfileSettings = () => {
         console.error("Error fetching profile choices:", error);
       }
     };
+
     const fetchProfileData = async () => {
       try {
         const res = await authApiInstance.get("/profile/");
@@ -82,13 +105,42 @@ const ProfileSettings = () => {
           setEmail(profile?.email || "");
         }
       } catch (error) {
-        console.log(error);
+        console.log("Profile fetch error:", error);
       }
     };
 
     fetchChoices();
     fetchProfileData();
+    fetchEmails();
   }, []);
+
+  // ✅ email add করার function
+  const handleAddEmail = async () => {
+    if (!newEmail) return toast.error("Please enter a valid email");
+
+    if (
+      emails.find((em) => em.email.toLowerCase() === newEmail.toLowerCase())
+    ) {
+      return toast.error("This email already exists!");
+    }
+
+    try {
+      const res = await authApiInstance.post("/user/emails/add/", {
+        email: newEmail,
+      });
+
+      if (res.status === 201) {
+        toast.success("Email added successfully!");
+        setNewEmail("");
+        setShowEmailInput(false);
+        // ✅ নতুন email যোগ করার পর fresh list আনো
+        await fetchEmails();
+      }
+    } catch (error) {
+      console.log("Add email error:", error);
+      toast.error("Failed to add email");
+    }
+  };
 
   const updateProfileData = async () => {
     try {
@@ -227,17 +279,59 @@ const ProfileSettings = () => {
       <div className="space-y-4">
         <h3 className="font-medium text-[#2E2E2E]">My email Address</h3>
         <div className="flex items-center gap-3 text-sm">
+          {" "}
           <div className="w-12 h-12 bg-[#E4572E]/30 flex items-center justify-center rounded-full">
-            <img src={sms} className="w-6 h-6" alt="" />
-          </div>
+            {" "}
+            <img src={sms} className="w-6 h-6" alt="" />{" "}
+          </div>{" "}
           <div>
-            <p className="text-sm">{email}</p>
-            <p className="text-[#2E2E2E]/50 text-sm">1 month ago</p>
-          </div>
+            {" "}
+            <p className="text-sm">{email}</p>{" "}
+            <p className="text-[#2E2E2E]/50 text-sm">1 month ago</p>{" "}
+          </div>{" "}
         </div>
 
+        {/* Emails List */}
+        {emails.map((item, index) => (
+          <div key={index} className="flex items-center gap-3 text-sm">
+            <div className="w-12 h-12 bg-[#E4572E]/30 flex items-center justify-center rounded-full">
+              <img src={sms} className="w-6 h-6" alt="" />
+            </div>
+            <div>
+              <p className="text-sm">{item}</p>
+              <p className="text-[#2E2E2E]/50 text-sm">
+                {item.addedAt
+                  ? formatDistanceToNow(item.addedAt, { addSuffix: true })
+                  : "Just now"}
+              </p>
+            </div>
+          </div>
+        ))}
+
+        {/* Add Email Input (conditionally visible) */}
+        {showEmailInput && (
+          <div className="flex items-center gap-3">
+            <input
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder="Enter new email"
+              className="flex-1 border border-[#2E2E2E]/20 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E4572E]"
+            />
+            <button
+              onClick={handleAddEmail}
+              className="bg-[#E4572E] text-white px-4 py-2 rounded-lg hover:bg-[#f55423] transition-colors"
+            >
+              Save
+            </button>
+          </div>
+        )}
+
         <div className="flex justify-between items-center">
-          <button className="bg-[#FFE3D5] text-[#E4572E] text-sm w-52 h-10 rounded-lg">
+          <button
+            onClick={() => setShowEmailInput((prev) => !prev)}
+            className="bg-[#FFE3D5] text-[#E4572E] text-sm w-52 h-10 rounded-lg"
+          >
             +Add Email Address
           </button>
           <button
