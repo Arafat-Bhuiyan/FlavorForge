@@ -6,6 +6,7 @@ import bot from "../../assets/images/bot.png";
 import user from "../../assets/images/user.png";
 import lock from "../../assets/images/lock.png";
 import { useNavigate } from "react-router-dom";
+import authApiInstance from "../../utils/privateApiInstance";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,48 +19,82 @@ const Chatbot = () => {
       text: "Hi! What's in your kitchen today?",
       timestamp: "12:30",
     },
-    {
-      id: 2,
-      type: "user",
-      text: "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum",
-      timestamp: "12:31",
-    },
-    {
-      id: 3,
-      type: "bot",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      timestamp: "12:32",
-    },
-    {
-      id: 4,
-      type: "user",
-      text: "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum",
-      timestamp: "12:33",
-    },
   ]);
 
-  const [freeLimit, setFreeLimit] = useState(5); // free limit
-  const [showModal, setShowModal] = useState(false); // modal control
+  const [chatId, setChatId] = useState(null);
+  const [freeLimit, setFreeLimit] = useState(null); // free limit
+  // const [showModal, setShowModal] = useState(false); // modal control
+  const [isBotTyping, setIsBotTyping] = useState(false);
 
-  const handleSendMessage = () => {
-    if (freeLimit <= 0) {
-      setShowModal(true); // limit cross হলে modal দেখাও
-      return;
-    }
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
 
-    if (message.trim()) {
-      const newMessage = {
-        id: messages.length + 1,
-        type: "user",
-        text: message,
-        timestamp: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
-      setMessages([...messages, newMessage]);
-      setMessage("");
-      setFreeLimit(freeLimit - 1);
+    // user message যোগ করা
+    const newMessage = {
+      id: messages.length + 1,
+      type: "user",
+      text: message,
+      timestamp: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    setMessages((prev) => [...prev, newMessage]);
+    setMessage("");
+
+    try {
+      setIsBotTyping(true); // ✅ bot response আসার আগেই টাইপিং শুরু হবে
+      const res = await authApiInstance.post("/chats/send_message/", {
+        message: newMessage.text,
+        chat_id: chatId,
+      });
+
+      if (res.status === 200) {
+        const data = res.data;
+
+        if (data.chat_id) {
+          setChatId(data.chat_id);
+        }
+
+        if (data.response_type === "recipe" && data.recipe_details) {
+          const recipeMessage = {
+            id: Date.now(),
+            type: "recipe",
+            recipe: data.recipe_details,
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setMessages((prev) => [...prev, recipeMessage]);
+        } else if (data.response_type === "error" && data.error_details) {
+          const errorMessage = {
+            id: Date.now(),
+            type: "error",
+            error: data.error_details,
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setMessages((prev) => [...prev, errorMessage]);
+        } else if (data.conversation_details?.response) {
+          const botMessage = {
+            id: Date.now(),
+            type: "bot",
+            text: data.conversation_details.response,
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setMessages((prev) => [...prev, botMessage]);
+        }
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      setIsBotTyping(false); // ✅ সবশেষে টাইপিং বন্ধ হবে
     }
   };
 
@@ -101,52 +136,126 @@ const Chatbot = () => {
               msg.type === "user" ? "justify-end" : "justify-start"
             }`}
           >
-            {/* Avatar always left & bottom aligned */}
+            {/* Avatar */}
             <div className="w-10 h-10 flex items-center justify-center mr-4 self-end">
-              <img src={msg.type === "bot" ? bot : user} alt="" />
+              <img src={msg.type === "user" ? user : bot} alt="" />
             </div>
 
-            {/* Message Bubble with Triangle */}
-            <div className="relative max-w-xs">
-              <div
-                className={`px-4 py-3 rounded-2xl shadow-sm ${
-                  msg.type === "bot"
-                    ? "bg-[#FC8A07] text-white rounded-xl"
-                    : "bg-[#F8EFE6] text-[#2E2E2E] rounded-xl border"
-                }`}
-              >
-                <p className="text-sm leading-relaxed">{msg.text}</p>
-
-                {/* Timestamp */}
+            {/* === Normal Conversation === */}
+            {msg.type === "bot" || msg.type === "user" ? (
+              <div className="relative max-w-xs">
                 <div
-                  className={`flex items-center text-xs justify-end mt-1 space-x-1 ${
-                    msg.type === "user" ? "text-gray-400" : "text-white"
+                  className={`px-4 py-3 rounded-2xl shadow-sm ${
+                    msg.type === "bot"
+                      ? "bg-[#FC8A07] text-white rounded-xl"
+                      : "bg-[#F8EFE6] text-[#2E2E2E] rounded-xl border"
                   }`}
                 >
-                  <span>{msg.timestamp}</span>
+                  <p className="text-sm leading-relaxed">{msg.text}</p>
+                  <div
+                    className={`flex items-center text-xs justify-end mt-1 space-x-1 ${
+                      msg.type === "user" ? "text-gray-400" : "text-white"
+                    }`}
+                  >
+                    <span>{msg.timestamp}</span>
+                  </div>
                 </div>
               </div>
+            ) : null}
 
-              {/* Triangle Tail → both user & bot now on left */}
-              <div
-                className={`absolute left-[-12px] bottom-2 w-0 h-0 
-            border-t-[8px] border-t-transparent 
-            ${
-              msg.type === "bot"
-                ? "border-r-[12px] shadow-xl border-r-[#FC8A07]"
-                : "border-r-[12px] shadow-xl border-r-[#F8EFE6]"
-            }
-            border-b-[10px] border-b-transparent`}
-              ></div>
-            </div>
+            {/* === Recipe UI === */}
+            {msg.type === "recipe" && (
+              <div className="relative max-w-lg">
+                <div className="px-5 py-4 bg-white border rounded-2xl shadow-md text-[#2E2E2E]">
+                  <h3 className="text-xl font-bold text-[#E4572E] mb-2">
+                    {msg.recipe.title}
+                  </h3>
+                  <p className="text-sm italic text-gray-600 mb-3">
+                    ⭐ {msg.recipe.rating} | {msg.timestamp}
+                  </p>
+                  <p className="text-base mb-4">{msg.recipe.overview}</p>
+
+                  <h4 className="font-semibold text-lg mb-2">Ingredients:</h4>
+                  <ul className="list-disc list-inside space-y-1 text-sm mb-4">
+                    {msg.recipe.ingredients.map((ing, i) => (
+                      <li key={i}>{ing}</li>
+                    ))}
+                  </ul>
+
+                  <h4 className="font-semibold text-lg mb-2">Instructions:</h4>
+                  <p className="whitespace-pre-line text-sm leading-relaxed">
+                    {msg.recipe.instructions}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* === Error UI === */}
+            {msg.type === "error" && (
+              <div className="relative max-w-lg">
+                <div className="px-5 py-4 bg-[#FFEDED] border border-[#E4572E] rounded-2xl shadow-md text-[#2E2E2E]">
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-[#E4572E] mb-2">
+                    {msg.error.title}
+                  </h3>
+
+                  {/* Overview */}
+                  <p className="text-base mb-4">{msg.error.overview}</p>
+
+                  {/* Bold header for items */}
+                  {msg.error["ingrediants items"]?.length > 0 && (
+                    <>
+                      <h4 className="font-semibold text-lg mb-2">
+                        Invalid Ingredients:
+                      </h4>
+                      <ul className="list-disc list-inside space-y-1 text-sm mb-2">
+                        {msg.error["ingrediants items"].map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+
+                  {/* Timestamp */}
+                  <div className="flex items-center text-xs justify-end mt-1 text-[#E4572E]">
+                    <span>{msg.timestamp}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ))}
 
-        <div className={`${isOpen ? "block" : "hidden"} flex justify-center items-center`}>
-          
+        {/* === Bot Typing Indicator === */}
+        {isBotTyping && (
+          <div className="flex items-start justify-start">
+            {/* Bot Avatar */}
+            <div className="w-10 h-10 flex items-center justify-center mr-4">
+              <img src={bot} alt="bot" />
+            </div>
+
+            {/* Typing bubble */}
+            <div className="px-4 py-2 bg-[#FC8A07] text-white rounded-2xl shadow-sm text-sm">
+              AI Chief is thinking...
+            </div>
+          </div>
+        )}
+
+        <div
+          className={`${
+            isOpen ? "block" : "hidden"
+          } flex justify-center items-center`}
+        >
           <div className=" w-[648px] p-3 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3 mb-3">
-            <p className="text-black text-base">You’ve hit the 5 Free recipe plan limit for ChiefGPT</p>
-            <button onClick={handleSubscription} className="py-3 px-6 text-lg font-medium text-[#2E2E2E] border border-[#BFABA5] bg-[#FEFBFA] rounded-full">Upgrade Your Plan</button>
+            <p className="text-black text-base">
+              You’ve hit the 5 Free recipe plan limit for ChiefGPT
+            </p>
+            <button
+              onClick={handleSubscription}
+              className="py-3 px-6 text-lg font-medium text-[#2E2E2E] border border-[#BFABA5] bg-[#FEFBFA] rounded-full"
+            >
+              Upgrade Your Plan
+            </button>
           </div>
         </div>
       </div>
@@ -174,11 +283,11 @@ const Chatbot = () => {
       </div>
 
       {/* 🚨 Modal */}
-      {showModal && (
+      {/* {showModal && (
         <div
           onClick={() => {
             setIsOpen(true);
-            setShowModal(false); 
+            setShowModal(false);
           }}
           className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-[#F5F5F5] bg-opacity-20 backdrop-blur-sm"
         >
@@ -207,7 +316,7 @@ const Chatbot = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
