@@ -23,19 +23,19 @@ export default function AdminLogin() {
     e.preventDefault();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    // const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     if (!emailRegex.test(email)) {
       setError("Invalid email format");
       return;
     }
 
-    if (!passwordRegex.test(password)) {
-      setError(
-        "Password must be at least 8 characters, include one uppercase letter and one number"
-      );
-      return;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError(
+    //     "Password must be at least 8 characters, include one uppercase letter and one number"
+    //   );
+    //   return;
+    // }
 
     setError("");
     toast.success("Login successful");
@@ -43,6 +43,7 @@ export default function AdminLogin() {
     login({
       name: "Admin",
       email,
+      password,
       photoURL: profile,
     });
 
