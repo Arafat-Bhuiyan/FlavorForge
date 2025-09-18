@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import profile from "../../assets/images/profile.png";
-import { useAuth } from "../../pages/Auth/Login/AuthContext";
+import { MyContext } from "../../Provider/Provider";
+
 
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const {login} = useContext(MyContext)
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {

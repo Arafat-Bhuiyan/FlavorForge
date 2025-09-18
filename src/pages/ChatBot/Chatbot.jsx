@@ -4,9 +4,9 @@ import cancel from "../../assets/images/cancel-circle.png";
 import send from "../../assets/images/send.png";
 import bot from "../../assets/images/bot.png";
 import user from "../../assets/images/user.png";
-import lock from "../../assets/images/lock.png";
 import { useNavigate } from "react-router-dom";
 import authApiInstance from "../../utils/privateApiInstance";
+import ChatHistorySidebar from "./ChatHistory";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +21,7 @@ const Chatbot = () => {
     },
   ]);
 
+  const [showSidebar, setShowSidebar] = useState(false);
   const [chatId, setChatId] = useState(null);
   const [freeLimit, setFreeLimit] = useState(null); // free limit
   // const [showModal, setShowModal] = useState(false); // modal control
@@ -43,7 +44,7 @@ const Chatbot = () => {
     setMessage("");
 
     try {
-      setIsBotTyping(true); // ✅ bot response আসার আগেই টাইপিং শুরু হবে
+      setIsBotTyping(true);
       const res = await authApiInstance.post("/chats/send_message/", {
         message: newMessage.text,
         chat_id: chatId,
@@ -52,10 +53,12 @@ const Chatbot = () => {
       if (res.status === 200) {
         const data = res.data;
 
+        // Chat ID update করো যদি নতুন chat তৈরি হয়
         if (data.chat_id) {
           setChatId(data.chat_id);
         }
 
+        // Response handle করো
         if (data.response_type === "recipe" && data.recipe_details) {
           const recipeMessage = {
             id: Date.now(),
@@ -94,9 +97,133 @@ const Chatbot = () => {
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
-      setIsBotTyping(false); // ✅ সবশেষে টাইপিং বন্ধ হবে
+      setIsBotTyping(false);
     }
   };
+
+  // New Chat handle করার জন্য
+  const handleNewChat = (newChatId) => {
+    setChatId(newChatId); // null for new chat
+    setMessages([
+      {
+        id: 1,
+        type: "bot",
+        text: "Hi! What's in your kitchen today?",
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      },
+    ]);
+  };
+
+  const handleSelectChat = (chat) => {
+    setChatId(chat.id);
+
+    const loadedMessages = [];
+
+    // Initial bot message always add করো
+    loadedMessages.push({
+      id: 1,
+      type: "bot",
+      text: "Hi! What's in your kitchen today?",
+      timestamp: "12:30",
+    });
+
+    // Last message add করো যদি থাকে
+    const lm = chat.last_message;
+    if (lm) {
+      if (lm.message_type === "recipe") {
+        loadedMessages.push({
+          id: lm.id,
+          type: "recipe",
+          recipe: lm.extra_data,
+          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        });
+      } else if (lm.message_type === "error") {
+        loadedMessages.push({
+          id: lm.id,
+          type: "error",
+          error: lm.extra_data,
+          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        });
+      } else {
+        loadedMessages.push({
+          id: lm.id,
+          type: "bot",
+          text: lm.content,
+          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        });
+      }
+    }
+
+    setMessages(loadedMessages);
+  };
+
+  // Full Chat Messages load করার জন্য
+  // const loadFullChatHistory = async (chatId) => {
+  //   try {
+  //     const res = await authApiInstance.get(`/chats/${chatId}/messages/`);
+  //     if (res.status === 200) {
+  //       const chatMessages = res.data.map((msg) => {
+  //         if (msg.message_type === "recipe") {
+  //           return {
+  //             id: msg.id,
+  //             type: "recipe",
+  //             recipe: msg.extra_data,
+  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+  //               hour: "2-digit",
+  //               minute: "2-digit",
+  //             }),
+  //           };
+  //         } else if (msg.message_type === "error") {
+  //           return {
+  //             id: msg.id,
+  //             type: "error",
+  //             error: msg.extra_data,
+  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+  //               hour: "2-digit",
+  //               minute: "2-digit",
+  //             }),
+  //           };
+  //         } else {
+  //           return {
+  //             id: msg.id,
+  //             type: msg.sender === "user" ? "user" : "bot",
+  //             text: msg.content,
+  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+  //               hour: "2-digit",
+  //               minute: "2-digit",
+  //             }),
+  //           };
+  //         }
+  //       });
+
+  //       // যদি কোন messages না থাকে তাহলে initial bot message add করো
+  //       if (chatMessages.length === 0) {
+  //         chatMessages.push({
+  //           id: 1,
+  //           type: "bot",
+  //           text: "Hi! What's in your kitchen today?",
+  //           timestamp: "12:30",
+  //         });
+  //       }
+
+  //       setMessages(chatMessages);
+  //     }
+  //   } catch (err) {
+  //     console.error("Error loading chat messages:", err);
+  //   }
+  // };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -109,7 +236,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {/* Header */}
       <div className="bg-[#E4572E] text-white py-5 px-14 flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -122,7 +249,7 @@ const Chatbot = () => {
             </div>
           </div>
         </div>
-        <button className="p-1">
+        <button className="p-1" onClick={() => setShowSidebar((prev) => !prev)}>
           <img src={cancel} alt="" />
         </button>
       </div>
@@ -275,12 +402,23 @@ const Chatbot = () => {
           </div>
           <button
             onClick={handleSendMessage}
-            className="w-11 h-11 flex items-center justify-center absolute right-[330px] "
+            className="w-11 h-11 flex items-center justify-center absolute right-[20px] "
           >
             <img src={send} alt="" />
           </button>
         </div>
       </div>
+
+      {/* Right Sidebar */}
+      {showSidebar && (
+        <div className="absolute top-0 left-[-309px]">
+          <ChatHistorySidebar
+            activeChatId={chatId}
+            onNewChat={handleNewChat}
+            onSelectChat={handleSelectChat}
+          />
+        </div>
+      )}
 
       {/* 🚨 Modal */}
       {/* {showModal && (

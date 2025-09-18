@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../pages/Auth/Login/AuthContext";
+import { MyContext } from "../../Provider/Provider";
+import { useContext } from "react";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const {user} = useContext(MyContext);
   if (!user) {
     return <Navigate to="/admin/login" />;
   }
