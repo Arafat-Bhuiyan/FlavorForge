@@ -3,9 +3,9 @@ import { MyContext } from "../../Provider/Provider";
 import { useContext } from "react";
 
 const ProtectedRoute = ({ children }) => {
-  const {user} = useContext(MyContext);
-  if (!user) {
-    return <Navigate to="/admin/login" />;
+  const { admin } = useContext(MyContext);
+ if (!admin) {
+    return <Navigate to="/admin/login" replace />;
   }
   return children;
 };

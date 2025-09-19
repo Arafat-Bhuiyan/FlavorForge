@@ -12,7 +12,7 @@ export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const {login} = useContext(MyContext)
+  const { adminLogin } = useContext(MyContext);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -40,7 +40,7 @@ export default function AdminLogin() {
     setError("");
     toast.success("Login successful");
 
-    login({
+    adminLogin({
       name: "Admin",
       email,
       password,

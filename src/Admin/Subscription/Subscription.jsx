@@ -1,34 +1,61 @@
 import { useEffect, useState } from "react";
 import CustomDropdown from "../CustomDropdown";
 import usersData from "../../../public/user-subscription.json";
+import authApiInstance from "../../utils/privateApiInstance";
 
 export const Subscription = () => {
   const timeOptions = ["All", "Monthly", "Yearly"];
   const [users, setUsers] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [filter, setFilter] = useState("All"); // filter state
+  const [loading, setLoading] = useState(false);
 
+  // ✅ API call করে users load করা
   useEffect(() => {
-    setUsers(usersData);
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const res = await authApiInstance.get("/admin/user/subs/list/");
+        if (res.status === 200 && Array.isArray(res.data)) {
+          setUsers(res.data);
 
-    // Initialize the statusMap with the users' current statuses
-    const initialStatus = {};
-    usersData.forEach((user) => {
-      initialStatus[user.id] = user.status;
-    });
-    setStatusMap(initialStatus);
+          // statusMap initialize করা
+          const initialStatus = {};
+          res.data.forEach((user, index) => {
+            initialStatus[index] = user.status; // index কে key হিসেবে ব্যবহার করলাম
+          });
+          setStatusMap(initialStatus);
+        } else {
+          console.warn("Unexpected API response, fallback to local data");
+          setUsers(usersData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch subscription list:", error);
+        // fallback: local data
+        setUsers(usersData);
+        const initialStatus = {};
+        usersData.forEach((user) => {
+          initialStatus[user.id] = user.status;
+        });
+        setStatusMap(initialStatus);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
-  const handleSelect = (userId, option) => {
+  const handleSelect = (userKey, option) => {
     setStatusMap((prevStatus) => ({
       ...prevStatus,
-      [userId]: option,
+      [userKey]: option,
     }));
   };
 
   // filter করা হচ্ছে subPlan দিয়ে
   const filteredUsers =
-    filter === "All" ? users : users.filter((user) => user.subPlan === filter);
+    filter === "All" ? users : users.filter((user) => user.subcription_plan === filter);
 
   return (
     <div className="bg-[#FFFCF9]">
@@ -66,19 +93,19 @@ export const Subscription = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id} className="bg-[#E4572E]/5 shadow-sm rounded-lg">
-                <td className="px-4 py-3 rounded-l-lg">{user.name}</td>
-                <td className="px-4 py-3">{user.subPlan}</td>
-                <td className="px-4 py-3">{user.packageAmount}</td>
-                <td className="px-4 py-3">{user.renewalDate}</td>
-                <td className="px-4 py-3">{user.expiryWarnings}</td>
+            {filteredUsers.map((user, index) => (
+              <tr key={index} className="bg-[#E4572E]/5 shadow-sm rounded-lg">
+                <td className="px-4 py-3 rounded-l-lg">{user.name || "—"}</td>
+                <td className="px-4 py-3">{user.subcription_plan}</td>
+                <td className="px-4 py-3">{user.pakage_amount}</td>
+                <td className="px-4 py-3">{user.renewal_date || "N/A"}</td>
+                <td className="px-4 py-3">{user.expiry_warnings || "N/A"}</td>
                 <td className="px-4 py-3">
                   <div className="relative w-32">
                     <CustomDropdown
                       options={["Active", "Postpone"]}
-                      defaultLabel={statusMap[user.id]}
-                      onSelect={(option) => handleSelect(user.id, option)}
+                      defaultLabel={statusMap[[index]]}
+                      onSelect={(option) => handleSelect(index, option)}
                     />
                   </div>
                 </td>

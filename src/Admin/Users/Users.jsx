@@ -1,14 +1,36 @@
 import { useEffect, useState } from "react";
-import usersData from "../../../public/users.json";
 import { Eye, Trash2 } from "lucide-react"; // For icons
 import UserDetails from "./UserDetails"; // Import the new UserDetails component
+import authApiInstance from "../../utils/privateApiInstance";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ API Call
+  const fetchUsers = async () => {
+    try {
+      const res = await authApiInstance.get("/admin/users/list/");
+      if (res.status === 200 && Array.isArray(res.data?.data)) {
+        // backend থেকে যে data আসছে সেটা UI এর জন্য map করা
+        const formattedUsers = res.data.data.map((u) => ({
+          id: u.id,
+          name: u.name || "Unnamed User",
+          email: u.email,
+          sub: u.subscription === "PAID" ? "Paid" : "Free",
+        }));
+        setUsers(formattedUsers);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setUsers(usersData); // Load data from JSON
+    fetchUsers();
   }, []);
 
   const handleDelete = (id) => {
@@ -26,6 +48,14 @@ export default function Users() {
   const handleBack = () => {
     setSelectedUser(null);
   };
+
+  if (loading) {
+    return (
+      <div className="p-6 flex justify-center items-center">
+        <p className="text-gray-600 text-lg">Loading users...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

@@ -7,7 +7,9 @@ export const MyProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [admin, setAdmin] = useState(null);
 
+  // ✅ User login
   const login = async ({ email, password }) => {
     setLoading(true);
     setError(null);
@@ -61,11 +63,37 @@ export const MyProvider = ({ children }) => {
     }
   };
 
+  // ✅ Login function
+  const adminLogin = (data) => {
+    setAdmin(data);
+    localStorage.setItem("admin", JSON.stringify(data));
+  };
+
+  // ✅ Logout function
+  const adminLogout = () => {
+    setAdmin(null);
+    localStorage.removeItem("admin");
+  };
+
+  // ✅ On first load, restore from localStorage
+  useEffect(() => {
+    const storedAdmin = localStorage.getItem("admin");
+    if (storedAdmin) {
+      setAdmin(JSON.parse(storedAdmin));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("Provider Admin State Updated:", admin);
+  }, [admin]);
+
   const logout = () => {
     setUser(null);
+    setAdmin(null);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
+    localStorage.removeItem("admin");
   };
 
   useEffect(() => {
@@ -73,11 +101,27 @@ export const MyProvider = ({ children }) => {
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
     }
+
+    const loggedInAdmin = localStorage.getItem("admin");
+    if (loggedInAdmin) {
+      setAdmin(JSON.parse(loggedInAdmin));
+    }
   }, []);
 
   return (
     <MyContext.Provider
-      value={{ user, setUser, login, loading, error, logout, signup }}
+      value={{
+        user,
+        setUser,
+        login,
+        admin,
+        adminLogin,
+        adminLogout,
+        loading,
+        error,
+        logout,
+        signup,
+      }}
     >
       {children}
     </MyContext.Provider>

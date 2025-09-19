@@ -1,5 +1,5 @@
 import profile from "../../assets/images/profile4.png";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { StartCards } from "./StartCards";
 import Users from "../Users/Users";
@@ -8,6 +8,7 @@ import Settings from "../Settings/Settings";
 import { Subscription } from "../Subscription/Subscription";
 import PlanManagement from "../PlanManagement/PlanManagement";
 import Profile from "../Profile/Profile";
+import { MyContext } from "../../Provider/Provider";
 
 export default function DashboardMainPage() {
   const [currentComponent, setCurrentComponent] = useState("Dashboard"); // New state to track the active component
@@ -15,6 +16,13 @@ export default function DashboardMainPage() {
   const handleComponentChange = (component) => {
     setCurrentComponent(component); // Change the active component
   };
+
+  const { admin } = useContext(MyContext);
+
+  useEffect(() => {
+    console.log("Admin state:", admin);
+  }, [admin]);
+  
   return (
     <div className="flex h-screen bg-white">
       {/* Sidebar */}
