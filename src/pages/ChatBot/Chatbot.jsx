@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import aiLogo from "../../assets/images/ai-logo.png";
 import cancel from "../../assets/images/cancel-circle.png";
 import send from "../../assets/images/send.png";
@@ -7,6 +7,7 @@ import user from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import authApiInstance from "../../utils/privateApiInstance";
 import ChatHistorySidebar from "./ChatHistory";
+import lock from "../../assets/images/lock.png"
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,15 +18,38 @@ const Chatbot = () => {
       id: 1,
       type: "bot",
       text: "Hi! What's in your kitchen today?",
-      timestamp: "12:30",
+      timestamp: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     },
   ]);
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [chatId, setChatId] = useState(null);
-  const [freeLimit, setFreeLimit] = useState(null); // free limit
-  // const [showModal, setShowModal] = useState(false); // modal control
+  const [showModal, setShowModal] = useState(false); // modal control
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false); // Subscription status
+
+  // Fetch user subscription status from API
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const res = await authApiInstance.get("/profile/");
+        if (res.status === 200) {
+          const { is_subs } = res.data;
+          setIsSubscribed(is_subs); // Set subscription status
+          if (!is_subs) {
+            setShowModal(true); // Show modal if user is not subscribed
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    checkSubscription();
+  }, []);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
@@ -168,62 +192,6 @@ const Chatbot = () => {
 
     setMessages(loadedMessages);
   };
-
-  // Full Chat Messages load করার জন্য
-  // const loadFullChatHistory = async (chatId) => {
-  //   try {
-  //     const res = await authApiInstance.get(`/chats/${chatId}/messages/`);
-  //     if (res.status === 200) {
-  //       const chatMessages = res.data.map((msg) => {
-  //         if (msg.message_type === "recipe") {
-  //           return {
-  //             id: msg.id,
-  //             type: "recipe",
-  //             recipe: msg.extra_data,
-  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
-  //               hour: "2-digit",
-  //               minute: "2-digit",
-  //             }),
-  //           };
-  //         } else if (msg.message_type === "error") {
-  //           return {
-  //             id: msg.id,
-  //             type: "error",
-  //             error: msg.extra_data,
-  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
-  //               hour: "2-digit",
-  //               minute: "2-digit",
-  //             }),
-  //           };
-  //         } else {
-  //           return {
-  //             id: msg.id,
-  //             type: msg.sender === "user" ? "user" : "bot",
-  //             text: msg.content,
-  //             timestamp: new Date(msg.created_at).toLocaleTimeString([], {
-  //               hour: "2-digit",
-  //               minute: "2-digit",
-  //             }),
-  //           };
-  //         }
-  //       });
-
-  //       // যদি কোন messages না থাকে তাহলে initial bot message add করো
-  //       if (chatMessages.length === 0) {
-  //         chatMessages.push({
-  //           id: 1,
-  //           type: "bot",
-  //           text: "Hi! What's in your kitchen today?",
-  //           timestamp: "12:30",
-  //         });
-  //       }
-
-  //       setMessages(chatMessages);
-  //     }
-  //   } catch (err) {
-  //     console.error("Error loading chat messages:", err);
-  //   }
-  // };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -421,7 +389,7 @@ const Chatbot = () => {
       )}
 
       {/* 🚨 Modal */}
-      {/* {showModal && (
+      {showModal && (
         <div
           onClick={() => {
             setIsOpen(true);
@@ -454,7 +422,7 @@ const Chatbot = () => {
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

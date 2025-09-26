@@ -11,10 +11,11 @@ import Chatbot from "../pages/ChatBot/Chatbot";
 import { Settings } from "../pages/Settings/Settings";
 import Terms from "../pages/Settings/Terms";
 import Policy from "../pages/Settings/Policy";
-import DashboardMainPage from "../Admin/Dashboard/DashboardMainPage";
-import AdminLogin from "../Admin/Auth/AdminLogin";
-import ProtectedRoute from "../Admin/Auth/ProtectedRoute";
+// import DashboardMainPage from "../Admin/Dashboard/DashboardMainPage";
+// import AdminLogin from "../Admin/Auth/AdminLogin";
+// import ProtectedRoute from "../Admin/Auth/ProtectedRoute";
 import ProtectedRouteUser from "../pages/Auth/Login/ProtectedRouteUser";
+import ThankYou from "../pages/Subscription/ThankYou";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile-settings",
-         element: (
+        element: (
           <ProtectedRouteUser>
             <ProfileSettings />
           </ProtectedRouteUser>
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "/subscription",
         element: <Subscribe />,
+      },
+      {
+        path: "/payment/success",
+        element: <ThankYou />,
       },
       {
         path: "/chatbot",
@@ -92,18 +97,18 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/admin",
-    element: (
-      <ProtectedRoute>
-        <DashboardMainPage />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/login",
-    element: <AdminLogin />,
-  },
+  // {
+  //   path: "/admin",
+  //   element: (
+  //     <ProtectedRoute>
+  //       <DashboardMainPage />
+  //     </ProtectedRoute>
+  //   ),
+  // },
+  // {
+  //   path: "/admin/login",
+  //   element: <AdminLogin />,
+  // },
 ]);
 
 export default router;
