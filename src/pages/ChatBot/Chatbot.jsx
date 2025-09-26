@@ -7,7 +7,6 @@ import user from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import authApiInstance from "../../utils/privateApiInstance";
 import ChatHistorySidebar from "./ChatHistory";
-import lock from "../../assets/images/lock.png"
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +79,12 @@ const Chatbot = () => {
         // Chat ID update করো যদি নতুন chat তৈরি হয়
         if (data.chat_id) {
           setChatId(data.chat_id);
+        }
+
+        // 🔥 Plan Update Error Handle করো
+        if (data.error_type === "plan_update_message") {
+          handleOpenModal(); // modal দেখাও
+          return;
         }
 
         // Response handle করো
@@ -199,7 +204,13 @@ const Chatbot = () => {
     }
   };
 
-  const handleSubscription = () => {
+  // শুধু modal খোলার জন্য
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+
+  // আসল subscription page এ যাওয়ার জন্য
+  const handleGoToSubscription = () => {
     navigate("/subscription");
   };
 
@@ -210,7 +221,7 @@ const Chatbot = () => {
         <div className="flex items-center space-x-3">
           <img src={aiLogo} alt="" />
           <div>
-            <h3 className="font-bold text-2xl">AI Chief</h3>
+            <h3 className="font-bold text-2xl">Chef</h3>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-[#87FF70] rounded-full"></div>
               <p className="text-[#87FF70] text-xs">Online</p>
@@ -331,28 +342,10 @@ const Chatbot = () => {
 
             {/* Typing bubble */}
             <div className="px-4 py-2 bg-[#FC8A07] text-white rounded-2xl shadow-sm text-sm">
-              AI Chief is thinking...
+              Chef is thinking...
             </div>
           </div>
         )}
-
-        <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } flex justify-center items-center`}
-        >
-          <div className=" w-[648px] p-3 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3 mb-3">
-            <p className="text-black text-base">
-              You’ve hit the 5 Free recipe plan limit for ChiefGPT
-            </p>
-            <button
-              onClick={handleSubscription}
-              className="py-3 px-6 text-lg font-medium text-[#2E2E2E] border border-[#BFABA5] bg-[#FEFBFA] rounded-full"
-            >
-              Upgrade Your Plan
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Message Input */}
@@ -388,38 +381,19 @@ const Chatbot = () => {
         </div>
       )}
 
-      {/* 🚨 Modal */}
-      {showModal && (
-        <div
-          onClick={() => {
-            setIsOpen(true);
-            setShowModal(false);
-          }}
-          className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-[#F5F5F5] bg-opacity-20 backdrop-blur-sm"
-        >
-          <div className="relative m-4 p-6 w-2/3 h-[600px] flex flex-col items-center justify-center rounded-lg bg-[#BCBBBB]/50 backdrop-blur-sm shadow-lg">
-            <div className="flex flex-col items-center space-y-2 mb-14">
-              <img src={lock} alt="" />
-              <p className="font-semibold text-xl text-[#2E2E2E]">
-                Your subscription has expired.
-              </p>
-              <p className="font-medium text-sm text-[#2E2E2E]">
-                Subscribe now to get unlimited access to AI-powered recipes and
-                calorie tracking
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center space-y-3">
-              <p className="text-sm text-[#2E2E2E]">
-                No spam, only tasty recipes delivered to your inbox
-              </p>
-              <button
-                onClick={handleSubscription}
-                className="text-white w-[544px] h-14 bg-[#E4572E] rounded-full"
-              >
-                Subscribe Now
-              </button>
-            </div>
+      {/* Free Limit Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-[#F5F5F5] bg-opacity-20 backdrop-blur-sm">
+          <div className="w-[648px] p-3 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3">
+            <p className="text-black text-base">
+              You’ve hit the Free recipe plan limit for ChiefGPT
+            </p>
+            <button
+              onClick={handleGoToSubscription}
+              className="py-3 px-6 text-lg font-medium text-[#2E2E2E] border border-[#BFABA5] bg-[#FEFBFA] rounded-full"
+            >
+              Upgrade Your Plan
+            </button>
           </div>
         </div>
       )}

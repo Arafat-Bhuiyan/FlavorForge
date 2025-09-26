@@ -46,14 +46,6 @@ export default function ThankYou() {
         {/* Card */}
         <div className="border rounded-lg bg-white shadow-sm flex flex-col items-center p-16 mb-6">
           <div className="flex flex-col items-start gap-4">
-            <p className="text-lg text-[#2e2e2e]">
-              <span className="font-medium">Start Date:</span> August 17, 2025
-            </p>
-            <p className="text-lg text-[#2e2e2e] ">
-              <span className="font-medium">Next Billing:</span> September 17,
-              2025
-            </p>
-
             <p className="font-medium text-lg mb-2">
               You now have full access to:
             </p>
@@ -68,7 +60,10 @@ export default function ThankYou() {
             You can update or cancel your subscription anytime from the Account
             Settings.
           </p>
-          <button onClick={handleCooking} className="w-[732px] h-14 mx-auto bg-[#ef4c23] text-white rounded-lg font-medium text-xl hover:bg-[#d6401b]">
+          <button
+            onClick={handleCooking}
+            className="w-[732px] h-14 mx-auto bg-[#ef4c23] text-white rounded-lg font-medium text-xl hover:bg-[#d6401b]"
+          >
             Start Cooking
           </button>
         </div>
