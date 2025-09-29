@@ -5,7 +5,7 @@ import { MyContext } from "../../../Provider/Provider";
 const ProtectedRouteUser = ({ children }) => {
   const {user} = useContext(MyContext);
   if (!user) {
-    return <Navigate to="/login" />;
+    // return <Navigate to="/login" />;
   }
   return children;
 };

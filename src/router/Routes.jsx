@@ -97,18 +97,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/admin",
-  //   element: (
-  //     <ProtectedRoute>
-  //       <DashboardMainPage />
-  //     </ProtectedRoute>
-  //   ),
-  // },
-  // {
-  //   path: "/admin/login",
-  //   element: <AdminLogin />,
-  // },
 ]);
 
 export default router;

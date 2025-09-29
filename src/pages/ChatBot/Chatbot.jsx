@@ -234,7 +234,7 @@ const Chatbot = () => {
       </div>
 
       {/* Chat Messages */}
-      <div className="min-h-screen overflow-y-auto p-4 space-y-4 bg-[#FFFBEE]">
+      <div className="h-[590px] overflow-y-auto p-4 space-y-4 bg-[#FFFBEE]">
         {messages.map((msg) => (
           <div
             key={msg.id}

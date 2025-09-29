@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import publicApiInstance from "../../../utils/publicApiInstance";
+import { MyContext } from "../../../Provider/Provider";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const { handleGoogleSignup } = useContext(MyContext);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -65,6 +67,15 @@ export default function Signup() {
     }
   };
 
+  const handleSocialSignup = async () => {
+    try {
+      await handleGoogleSignup();
+      toast.success("Sign up with Google!");
+    } catch (error) {
+      toast.error("Google login failed!");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center px-4 mt-14 mb-32">
       <div className="w-full max-w-xl max-h-screen">
@@ -80,7 +91,7 @@ export default function Signup() {
           </div>
 
           {/* Google Login Button */}
-          <button className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors">
+          <button onClick={handleSocialSignup} className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors">
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -100,7 +111,7 @@ export default function Signup() {
               />
             </svg>
             <span className="text-gray-700 font-medium">
-              Log in with Google
+              Sign up with Google
             </span>
           </button>
 

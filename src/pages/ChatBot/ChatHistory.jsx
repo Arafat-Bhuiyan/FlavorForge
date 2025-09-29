@@ -67,7 +67,7 @@ const ChatHistorySidebar = ({ onSelectChat, activeChatId, onNewChat }) => {
   };
 
   return (
-    <div className="w-[320px] bg-[#FFFBEE] border-l border-gray-200 h-screen flex flex-col">
+    <div className="w-[320px] bg-[#FFFBEE] border-l border-gray-200 h-[767px] overflow-y-auto flex flex-col">
       {/* Header with New Chat Button */}
       <div className="p-4 border-b border-gray-300">
         <div className="flex items-center justify-between mb-3">

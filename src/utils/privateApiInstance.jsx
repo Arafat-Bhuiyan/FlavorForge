@@ -7,7 +7,6 @@ const authApiInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-
 authApiInstance.interceptors.request.use(
   async (req) => {
     const access_token = localStorage.getItem("access_token");
@@ -25,26 +24,31 @@ authApiInstance.interceptors.request.use(
 
     try {
       // Refresh the token
-      const { data, status } = await publicApiInstance.post("/get/new/token/", {
-        refresh: refresh_token,
-      });
+  
+      if (refresh_token) {
 
-      if (status === 200 && data?.access) {
-        // Update tokens in localStorage
-        localStorage.setItem("access_token", data.access);
+        const { data, status } = await publicApiInstance.post(
+          "/get/new/token/",
+          {
+            refresh: refresh_token,
+          }
+        );
 
-        // Update request with new access token
-        req.headers.Authorization = `Bearer ${data.access}`;
-        return req;
-      } else {
-        // Handle failure to refresh tokens
-        throw new Error("Failed to refresh token.");
-      }
+        if (status === 200 && data?.access) {
+          // Update tokens in localStorage
+          localStorage.setItem("access_token", data.access);
+
+          // Update request with new access token
+          req.headers.Authorization = `Bearer ${data.access}`;
+          return req;
+        }
+      } 
     } catch (error) {
       toast.error("Session expired. Please log in again.");
-      // Reject the request, triggering a logout (or redirect to login)
-      // You can also dispatch a logout action or redirect to login page
-      window.location.href = "/login";  // Forcing redirection to login page
+      // localStorage.removeItem("access_token");
+      // localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+       // Redirect to login page
       return Promise.reject(error); // Reject the request to stop the API call
     }
   },

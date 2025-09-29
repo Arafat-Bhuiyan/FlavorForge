@@ -1,5 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import publicApiInstance from "../utils/publicApiInstance";
+import { auth } from "../utils/firebase.init";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export const MyContext = createContext();
 
@@ -8,6 +10,8 @@ export const MyProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [admin, setAdmin] = useState(null);
+
+  const provider = new GoogleAuthProvider();
 
   // ✅ User login
   const login = async ({ email, password }) => {
@@ -63,6 +67,93 @@ export const MyProvider = ({ children }) => {
     }
   };
 
+  // ✅ Google login (with backend)
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 1. Firebase popup দিয়ে sign in করাও
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      console.log("RESULT:", result);
+      console.log("Firebase Google user:", user);
+      console.log("Email:", user.email);
+      console.log("UID:", user.uid);
+
+      // 2. এখন backend এ পাঠাও
+      // তোমার backend যদি uid কে password হিসেবে expect করে, তাহলে এটাকে পাঠাও
+      // অন্যথায় idToken/accessToken পাঠাও
+      const { data, status } = await publicApiInstance.post("/login/", {
+        email: user.email,
+        password: user.uid, // অথবা user.accessToken / user.stsTokenManager.accessToken
+      });
+
+      console.log("Google login API response:", data);
+
+       // 3. সফল হলে Firebase থেকে name & photo merge করো + localStorage ও context update করো
+    if (status === 200) {
+      const updatedUser = {
+        ...data.user,
+        full_name: user.displayName || data.user.full_name,
+        image_url: user.photoURL || data.user.image_url,
+      };
+
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      setUser(updatedUser); // Context update → Navbar বা অন্য component এ show করবে
+
+      // 4. route change
+      window.location.href = "/";
+      } else {
+        setError("Google login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Google Login Error:", error);
+      setError("An error occurred during Google login.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleGoogleSignup = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 1. Firebase popup দিয়ে sign in করাও
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      console.log("RESULT:", result);
+      console.log("Firebase Google user:", user);
+      console.log("Email:", user.email);
+      console.log("UID:", user.uid);
+
+      // 2. এখন backend এ পাঠাও
+      // তোমার backend যদি uid কে password হিসেবে expect করে, তাহলে এটাকে পাঠাও
+      // অন্যথায় idToken/accessToken পাঠাও
+      const { data, status } = await publicApiInstance.post("/sign-up/", {
+        email: user.email,
+        password: user.uid, // অথবা user.accessToken / user.stsTokenManager.accessToken
+        confirmPassword: user.uid,
+      });
+
+      console.log("Google login API response:", data);
+      if (data) {
+        // direct route change
+        window.location.href = "/login"; // এখানে login বা যেকোনো route দিতে পারো
+      }
+    } catch (error) {
+      console.error("Google Login Error:", error);
+      setError("An error occurred during Google login.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ✅ Login function
   const adminLogin = (data) => {
     setAdmin(data);
@@ -108,6 +199,11 @@ export const MyProvider = ({ children }) => {
     }
   }, []);
 
+  // const handleGoogleLogin = () => {
+  //   setLoading(true);
+  //   return signInWithPopup(auth, provider);
+  // };
+
   return (
     <MyContext.Provider
       value={{
@@ -121,6 +217,8 @@ export const MyProvider = ({ children }) => {
         error,
         logout,
         signup,
+        handleGoogleLogin,
+        handleGoogleSignup,
       }}
     >
       {children}

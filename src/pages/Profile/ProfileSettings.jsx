@@ -21,7 +21,7 @@ const ProfileSettings = () => {
   const [newEmail, setNewEmail] = useState("");
   const [showEmailInput, setShowEmailInput] = useState(false);
   const { user, setUser } = useContext(MyContext);
-  console.log("emails:", emails)
+  console.log("emails:", emails);
 
   // file input ref
   const fileInputRef = useRef(null);
@@ -169,6 +169,10 @@ const ProfileSettings = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log("USER from profile", user);
+  }, [user]);
   return (
     <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
       {/* Header */}

@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import recipe4 from "../../assets/images/recipe4.png";
-import recipe5 from "../../assets/images/recipe5.png";
 import left from "../../assets/images/left.png";
 import right from "../../assets/images/right.png";
 import { useNavigate } from "react-router-dom";
@@ -9,27 +7,27 @@ const demoData = [
   {
     id: 1,
     title: "Healthy Creme Chicken Soup Recipe",
-    image: "/src/assets/images/chickenSoup.png",
+    image: "https://i.ibb.co.com/Cs6mL0t4/chicken-Soup.png",
   },
   {
     id: 2,
     title: "Pasta with Sausage, Basil, and Mustard",
-    image: "/src/assets/images/pasta.png",
+    image: "https://i.ibb.co.com/SXPrY9Pd/pasta.png",
   },
   {
     id: 3,
     title: "90s-Style Mixed Green Salad with Balsamic-Glazed Chicken",
-    image: "/src/assets/images/salad.png",
+    image: "https://i.ibb.co.com/ymcKnpKg/salad.png",
   },
   {
     id: 4,
     title: "Sweet and Sour Chicken with Broccoli",
-    image: recipe4,
+    image: "https://i.ibb.co.com/67RJ1LXj/recipe4.png",
   },
   {
     id: 5,
     title: "Crispy Sweet and Sour Chicken",
-    image: recipe5,
+    image: "https://i.ibb.co.com/NdxJVZ5R/recipe5.png",
   },
 ];
 
@@ -52,7 +50,7 @@ const PopularDishes = () => {
   }, []);
 
   return (
-    <div onClick={() => navigate("/popular-recipe")} className="w-full flex flex-col gap-2 items-center justify-center mt-14">
+    <div className="w-full flex flex-col gap-2 items-center justify-center mt-14">
       <h1 className="font-semibold text-4xl text-[#2E2E2E]">Popular Dishes</h1>
       <p className="font-medium text-lg text-[#2E2E2E]">
         Tried, loved, and cooked by thousands of foodies worldwide
@@ -74,6 +72,7 @@ const PopularDishes = () => {
         >
           {dishes.map((dish) => (
             <div
+              onClick={() => navigate("/popular-recipe")}
               key={dish.id}
               className="bg-white p-4 rounded-2xl w-[410px] flex-shrink-0 snap-start h-[452px]"
             >

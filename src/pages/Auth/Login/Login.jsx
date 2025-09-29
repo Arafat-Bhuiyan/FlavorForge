@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
-import { data, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MyContext } from "../../../Provider/Provider";
 
 export default function Login() {
@@ -11,55 +11,11 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const {login} = useContext(MyContext)
+  const { login, handleGoogleLogin } = useContext(MyContext);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // ইমেইল ও পাসওয়ার্ড যাচাই
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-  //   if (!emailRegex.test(email)) {
-  //     setError("Invalid email format");
-  //     return;
-  //   }
-
-  //   if (!passwordRegex.test(password)) {
-  //     setError(
-  //       "Password must be at least 8 characters, include one uppercase letter and one number"
-  //     );
-  //     return;
-  //   }
-
-  //   try {
-  //     console.log("Email",email);
-  //     console.log("Password",password);
-
-  //     if (status === 200) {
-  //       localStorage.setItem("access_token", data?.access);
-  //       localStorage.setItem("refresh_token", data?.refresh);
-
-  //       setError("");
-  //       toast.success("Login successful");
-
-  //       login({
-  //         name: "Sarif",
-  //         email,
-  //         photoURL: profile,
-  //       });
-
-  //       setEmail("");
-  //       setPassword("");
-  //       navigate("/"); // Redirection after login
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error?.response?.data?.error);
-  //     toast.error(error?.response?.data?.error[0]);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,6 +46,16 @@ export default function Login() {
       toast.error("Login failed. Please try again.");
     }
   };
+
+const handleSocialLogin = async () => {
+  try {
+    await handleGoogleLogin(); 
+    toast.success("Logged in with Google!");
+  } catch (error) {
+    toast.error("Google login failed!");
+  }
+};
+
   return (
     <div className="flex items-center justify-center px-4 mt-14 mb-32">
       <div className="w-full max-w-xl max-h-screen">
@@ -102,7 +68,10 @@ export default function Login() {
           </div>
 
           {/* Google Login Button */}
-          <button className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors mb-4">
+          <button
+            onClick={handleSocialLogin}
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors mb-4"
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"

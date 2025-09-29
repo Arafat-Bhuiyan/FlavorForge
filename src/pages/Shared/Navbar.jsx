@@ -18,7 +18,7 @@ export const Navbar = () => {
   }
 
   useEffect(() => {
-    console.log(user);
+    console.log("USER",user);
   }, [user]);
   return (
     <div className="pb-16">
