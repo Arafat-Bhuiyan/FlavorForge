@@ -149,7 +149,7 @@ export const MyProvider = ({ children }) => {
         window.location.href = "/login"; // এখানে login বা যেকোনো route দিতে পারো
       }
     } catch (error) {
-      console.error("Google signup Error:", error);
+      console.error("Google Signup Error:", error);
       setError("An error occurred during Google login.");
     } finally {
       setLoading(false);
