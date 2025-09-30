@@ -92,22 +92,22 @@ export const MyProvider = ({ children }) => {
 
       console.log("Google login API response:", data);
 
-       // 3. সফল হলে Firebase থেকে name & photo merge করো + localStorage ও context update করো
-    if (status === 200) {
-      const updatedUser = {
-        ...data.user,
-        full_name: user.displayName || data.user.full_name,
-        image_url: user.photoURL || data.user.image_url,
-      };
+      // 3. সফল হলে Firebase থেকে name & photo merge করো + localStorage ও context update করো
+      if (status === 200) {
+        const updatedUser = {
+          ...data.user,
+          full_name: user.displayName || data.user.full_name,
+          image_url: user.photoURL || data.user.image_url,
+        };
 
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      setUser(updatedUser); // Context update → Navbar বা অন্য component এ show করবে
+        setUser(updatedUser); // Context update → Navbar বা অন্য component এ show করবে
 
-      // 4. route change
-      window.location.href = "/";
+        // 4. route change
+        window.location.href = "/";
       } else {
         setError("Google login failed. Please try again.");
       }
@@ -118,6 +118,8 @@ export const MyProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  // ✅ Google signup (with backend)
   const handleGoogleSignup = async () => {
     setLoading(true);
     setError(null);
@@ -147,7 +149,7 @@ export const MyProvider = ({ children }) => {
         window.location.href = "/login"; // এখানে login বা যেকোনো route দিতে পারো
       }
     } catch (error) {
-      console.error("Google Login Error:", error);
+      console.error("Google signup Error:", error);
       setError("An error occurred during Google login.");
     } finally {
       setLoading(false);
