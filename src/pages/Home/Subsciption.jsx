@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import authApiInstance from "../../utils/privateApiInstance";
+import { de } from "date-fns/locale";
+import publicApiInstance from "../../utils/publicApiInstance";
 
 const Subscription = () => {
   const [subscriptions, setSubscriptions] = useState([]); // State to store subscription data
@@ -11,7 +13,7 @@ const Subscription = () => {
   useEffect(() => {
     const fetchSubscriptions = async () => {
       try {
-        const res = await authApiInstance.get("/subscription/list/");
+        const res = await publicApiInstance.get("/subscription/list/");
         if (res.status === 200) {
           setSubscriptions(res.data.data); // Set the fetched data
         }
@@ -56,14 +58,19 @@ const Subscription = () => {
             >
               <div className="flex-1">
                 <div className="text-lg text-[#E4572E] font-semibold">
-                  {subscription.timing === "monthly" ? "Monthly Plan" : "Yearly Plan"}
+                  {subscription.timing === "monthly"
+                    ? "Monthly Plan"
+                    : "Yearly Plan"}
                   {subscription.timing === "yearly" && (
                     <span className="text-[#2E2E2E] text-base font-medium">
                       (Best Value — Save 20%)
                     </span>
                   )}
                 </div>
-                <h3 className="text-3xl text-[#2E2E2E] my-5">{subscription.package_id.charAt(0).toUpperCase() + subscription.package_id.slice(1)}</h3>
+                <h3 className="text-3xl text-[#2E2E2E] my-5">
+                  {subscription.package_id.charAt(0).toUpperCase() +
+                    subscription.package_id.slice(1)}
+                </h3>
                 <p className="w-1/2 text-[#2E2E2E] text-lg">
                   Experience the convenience of our services with a handful of
                   small projects.
@@ -87,15 +94,21 @@ const Subscription = () => {
               <div className="space-y-4 mb-8 text-base">
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-700">Unlimited AI-generated recipes</span>
+                  <span className="text-gray-700">
+                    Unlimited AI-generated recipes
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-700">Save and organize favorite dishes</span>
+                  <span className="text-gray-700">
+                    Save and organize favorite dishes
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-700">Nutritional info & calorie tracking</span>
+                  <span className="text-gray-700">
+                    Nutritional info & calorie tracking
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />

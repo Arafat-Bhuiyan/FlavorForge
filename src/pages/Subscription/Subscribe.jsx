@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import chef from "../../assets/images/chef-cartoon.png";
 import ThankYou from "./ThankYou";
 import authApiInstance from "../../utils/privateApiInstance";
+import publicApiInstance from "../../utils/publicApiInstance";
 
 export default function Subscribe() {
   const [subscriptions, setSubscriptions] = useState([]); // State to store subscription data
@@ -12,7 +13,7 @@ export default function Subscribe() {
   useEffect(() => {
     const fetchSubscriptions = async () => {
       try {
-        const res = await authApiInstance.get("/subscription/list/");
+        const res = await publicApiInstance.get("/subscription/list/");
         if (res.status === 200) {
           setSubscriptions(res.data.data); // Set the fetched data
           if (res.data.data.length > 0) {
@@ -63,6 +64,7 @@ export default function Subscribe() {
           ></path>
         </svg>
       </div>
+
       <div className="w-[1024px]">
         <h1 className="text-4xl font-medium text-center mb-2">Subscribe Now</h1>
         <p className="text-center text-[#2E2E2E] font-medium text-base mb-14">

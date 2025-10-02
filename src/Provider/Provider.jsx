@@ -2,6 +2,7 @@ import { createContext, use, useEffect, useState } from "react";
 import publicApiInstance from "../utils/publicApiInstance";
 import { auth } from "../utils/firebase.init";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { toast } from "react-toastify";
 
 export const MyContext = createContext();
 
@@ -9,7 +10,6 @@ export const MyProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [admin, setAdmin] = useState(null);
 
   const provider = new GoogleAuthProvider();
 
@@ -150,43 +150,33 @@ export const MyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Google Signup Error:", error);
+      // Check if error response exists
+      if (error.response && error.response.data && error.response.data.email) {
+        const errMsg = error.response.data.email[0];
+
+        if (errMsg === "user with this email already exists.") {
+          toast.error(
+            "This email is already registered. Please use a different email."
+          );
+        } else {
+          toast.error(errMsg); // baki email related error
+        }
+      } else {
+        // General fallback error
+        toast.error("An error occurred during Google login.");
+      }
       setError("An error occurred during Google login.");
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Login function
-  const adminLogin = (data) => {
-    setAdmin(data);
-    localStorage.setItem("admin", JSON.stringify(data));
-  };
-
-  // ✅ Logout function
-  const adminLogout = () => {
-    setAdmin(null);
-    localStorage.removeItem("admin");
-  };
-
-  // ✅ On first load, restore from localStorage
-  useEffect(() => {
-    const storedAdmin = localStorage.getItem("admin");
-    if (storedAdmin) {
-      setAdmin(JSON.parse(storedAdmin));
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log("Provider Admin State Updated:", admin);
-  }, [admin]);
-
   const logout = () => {
     setUser(null);
-    setAdmin(null);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
-    localStorage.removeItem("admin");
+    window.location.href = "/login"; // Redirect to login page after logout
   };
 
   useEffect(() => {
@@ -194,17 +184,7 @@ export const MyProvider = ({ children }) => {
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
     }
-
-    const loggedInAdmin = localStorage.getItem("admin");
-    if (loggedInAdmin) {
-      setAdmin(JSON.parse(loggedInAdmin));
-    }
   }, []);
-
-  // const handleGoogleLogin = () => {
-  //   setLoading(true);
-  //   return signInWithPopup(auth, provider);
-  // };
 
   return (
     <MyContext.Provider
@@ -212,9 +192,6 @@ export const MyProvider = ({ children }) => {
         user,
         setUser,
         login,
-        admin,
-        adminLogin,
-        adminLogout,
         loading,
         error,
         logout,

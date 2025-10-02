@@ -54,27 +54,45 @@ export default function Signup() {
         confirmPassword,
       });
       console.log(res);
-      setError("");
-      toast.success("Signup successful");
+
+      // check response
+      if (
+        res.status === 201 &&
+        res.data.message === "You have registered successfully"
+      ) {
+        toast.success(res.data.message); // show backend message
+        // delay redirect by 2 seconds so toast is visible
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3500);
+      }
 
       // Input fields clear
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setError("");
     } catch (error) {
       toast.error(error);
       console.log(error);
+      console.log(error.response.data.email[0]);
+
+      if (error.response && error.response.data && error.response.data.email) {
+        const errMsg = error.response.data.email[0];
+
+        if (errMsg === "user with this email already exists.") {
+          toast.error(
+            "This email is already registered. Please use a different email."
+          );
+        } else {
+          toast.error(errMsg); // any other backend validation error
+        }
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     }
   };
 
-  const handleSocialSignup = async () => {
-    try {
-      await handleGoogleSignup();
-      toast.success("Sign up with Google!");
-    } catch (error) {
-      toast.error("Google login failed!");
-    }
-  };
 
   return (
     <div className="flex items-center justify-center px-4 mt-14 mb-32">
@@ -91,7 +109,10 @@ export default function Signup() {
           </div>
 
           {/* Google Login Button */}
-          <button onClick={handleSocialSignup} className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors">
+          <button
+            onClick={handleGoogleSignup}
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 transition-colors"
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
