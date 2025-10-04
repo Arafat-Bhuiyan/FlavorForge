@@ -125,7 +125,7 @@ export const MyProvider = ({ children }) => {
     setError(null);
 
     try {
-      // 1. Firebase popup দিয়ে sign in করাও
+      // 1. Sign in using Firebase popup
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
@@ -134,9 +134,9 @@ export const MyProvider = ({ children }) => {
       console.log("Email:", user.email);
       console.log("UID:", user.uid);
 
-      // 2. এখন backend এ পাঠাও
-      // তোমার backend যদি uid কে password হিসেবে expect করে, তাহলে এটাকে পাঠাও
-      // অন্যথায় idToken/accessToken পাঠাও
+      // 2. Now send it to the backend
+      // If your backend expects the uid as the password, send it as such
+      // Otherwise, send the idToken/accessToken
       const { data, status } = await publicApiInstance.post("/sign-up/", {
         email: user.email,
         password: user.uid, // অথবা user.accessToken / user.stsTokenManager.accessToken
@@ -146,7 +146,7 @@ export const MyProvider = ({ children }) => {
       console.log("Google login API response:", data);
       if (data) {
         // direct route change
-        window.location.href = "/login"; // এখানে login বা যেকোনো route দিতে পারো
+        window.location.href = "/login";
       }
     } catch (error) {
       console.error("Google Signup Error:", error);
