@@ -27,10 +27,15 @@ const ChatHistorySidebar = ({ onSelectChat, activeChatId, onNewChat }) => {
     if (searchQuery.trim() === "") {
       setFilteredChats(chats);
     } else {
-      const filtered = chats.filter((chat) =>
-        chat.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        chat.last_message?.content?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        chat.last_message?.extra_data?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      const filtered = chats.filter(
+        (chat) =>
+          chat.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          chat.last_message?.content
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          chat.last_message?.extra_data?.title
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
       setFilteredChats(filtered);
     }
@@ -49,19 +54,21 @@ const ChatHistorySidebar = ({ onSelectChat, activeChatId, onNewChat }) => {
     if (chat.title && chat.title !== "New Chat") {
       return chat.title;
     }
-    
+
     // If it's a recipe, use recipe title
     if (chat.last_message?.message_type === "recipe") {
-      return `Recipe: ${chat.last_message.extra_data?.title || "Unknown Recipe"}`;
+      return `Recipe: ${
+        chat.last_message.extra_data?.title || "Unknown Recipe"
+      }`;
     }
-    
+
     // If it's a regular conversation, use first part of content
     if (chat.last_message?.content) {
-      return chat.last_message.content.length > 40 ? 
-        chat.last_message.content.substring(0, 40) + "..." :
-        chat.last_message.content;
+      return chat.last_message.content.length > 40
+        ? chat.last_message.content.substring(0, 40) + "..."
+        : chat.last_message.content;
     }
-    
+
     // Default fallback
     return "New Chat";
   };
@@ -80,10 +87,13 @@ const ChatHistorySidebar = ({ onSelectChat, activeChatId, onNewChat }) => {
             New Chat
           </button>
         </div>
-        
+
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+          <Search
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={16}
+          />
           <input
             type="text"
             placeholder="Search chats..."
@@ -107,37 +117,45 @@ const ChatHistorySidebar = ({ onSelectChat, activeChatId, onNewChat }) => {
                 key={chat.id}
                 onClick={() => onSelectChat(chat)}
                 className={`p-3 rounded-lg cursor-pointer hover:bg-[#FCF1D6] transition-colors ${
-                  activeChatId === chat.id ? "bg-[#FCF1D6] border-l-4 border-[#E4572E]" : ""
+                  activeChatId === chat.id
+                    ? "bg-[#FCF1D6] border-l-4 border-[#E4572E]"
+                    : ""
                 }`}
               >
                 <div className="flex items-start gap-2">
-                  <MessageCircle size={16} className="text-[#E4572E] mt-1 flex-shrink-0" />
+                  <MessageCircle
+                    size={16}
+                    className="text-[#E4572E] mt-1 flex-shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold truncate">
                       {getChatTitle(chat)}
                     </h3>
-                    
+
                     {/* Recipe message preview */}
                     {chat.last_message?.message_type === "recipe" && (
                       <p className="text-sm text-gray-700 italic mt-1 line-clamp-2">
-                        {chat.last_message.extra_data?.overview?.substring(0, 50) + "..." || "Recipe details"}
+                        {chat.last_message.extra_data?.overview?.substring(
+                          0,
+                          50
+                        ) + "..." || "Recipe details"}
                       </p>
                     )}
-                    
+
                     {/* Regular conversation preview */}
                     {chat.last_message?.message_type === "conversation" && (
                       <p className="text-sm text-gray-700 italic mt-1 line-clamp-2">
                         {chat.last_message.content}
                       </p>
                     )}
-                    
+
                     {/* Error message preview */}
                     {chat.last_message?.message_type === "error" && (
                       <p className="text-sm text-red-500 italic mt-1 line-clamp-2">
                         Error occurred
                       </p>
                     )}
-                    
+
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(chat.updated_at).toLocaleString()}
                     </p>

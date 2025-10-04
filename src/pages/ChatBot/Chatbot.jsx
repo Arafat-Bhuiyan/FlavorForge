@@ -159,40 +159,41 @@ const Chatbot = () => {
       timestamp: "12:30",
     });
 
-    // Last message add করো যদি থাকে
-    const lm = chat.last_message;
-    if (lm) {
-      if (lm.message_type === "recipe") {
-        loadedMessages.push({
-          id: lm.id,
-          type: "recipe",
-          recipe: lm.extra_data,
-          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        });
-      } else if (lm.message_type === "error") {
-        loadedMessages.push({
-          id: lm.id,
-          type: "error",
-          error: lm.extra_data,
-          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        });
-      } else {
-        loadedMessages.push({
-          id: lm.id,
-          type: "bot",
-          text: lm.content,
-          timestamp: new Date(lm.created_at).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        });
-      }
+    // chat.messages থেকে সব message add করো
+    if (chat.messages && chat.messages.length > 0) {
+      chat.messages.forEach((msg) => {
+        if (msg.message_type === "recipe") {
+          loadedMessages.push({
+            id: msg.id,
+            type: "recipe",
+            recipe: msg.extra_data,
+            timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          });
+        } else if (msg.message_type === "error") {
+          loadedMessages.push({
+            id: msg.id,
+            type: "error",
+            error: msg.extra_data,
+            timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          });
+        } else {
+          loadedMessages.push({
+            id: msg.id,
+            type: msg.sender === "user" ? "user" : "bot",
+            text: msg.content,
+            timestamp: new Date(msg.created_at).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          });
+        }
+      });
     }
 
     setMessages(loadedMessages);
