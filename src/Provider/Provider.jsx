@@ -31,12 +31,21 @@ export const MyProvider = ({ children }) => {
         localStorage.setItem("refresh_token", data?.refresh);
         localStorage.setItem("user", JSON.stringify(data?.user));
         setUser(data?.user);
+
+        window.location.href = "/"; // Redirect to home page after login
       } else {
         setError("Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error(error);
-      setError("An error occurred during login. Please try again.");
+      if (error.response && error.response.data) {
+        const serverError = error.response.data.error?.[0] || "Login failed";
+        setError(serverError);
+        toast.error(serverError);
+      } else {
+        setError("An error occurred during login. Please try again.");
+        toast.error("An error occurred during login. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

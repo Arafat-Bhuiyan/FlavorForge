@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "/public/FlavorForgeLogo.png";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MyContext } from "../../../Provider/Provider";
 
 export default function Login() {
@@ -10,7 +10,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { login, handleGoogleLogin } = useContext(MyContext);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -40,7 +40,6 @@ export default function Login() {
 
       setEmail("");
       setPassword("");
-      navigate("/"); // Redirect after login
     } catch (error) {
       console.error("Login Error", error);
       toast.error("Login failed. Please try again.");
