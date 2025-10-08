@@ -10,6 +10,6 @@ export default defineConfig({
     watch: {
       usePolling: true
     },
-    allowedHosts: ['admin.flavorforge.io','www.flavorforge.io'],
+    allowedHosts: ['admin.flavorforge.io','www.flavorforge.io',"flavorforge.io"],
   },
 });
