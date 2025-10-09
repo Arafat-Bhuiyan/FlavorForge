@@ -387,7 +387,7 @@ const Chatbot = () => {
         <div className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-[#F5F5F5] bg-opacity-20 backdrop-blur-sm">
           <div className="w-[648px] p-3 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3">
             <p className="text-black text-base">
-              You’ve hit the Free recipe plan limit for ChiefGPT
+              You’ve hit the Free recipe plan limit for FlavorForge
             </p>
             <button
               onClick={handleGoToSubscription}
