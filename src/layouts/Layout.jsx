@@ -6,11 +6,14 @@ import { Footer } from "../pages/Shared/Footer";
 export const Layout = () => {
   return (
     <div className="bg-[#FAF3E0]">
-      <div className="max-w-7xl mx-auto pt-6">
+      <div className="pt-6 px-20">
         <Navbar />
-        <Outlet />
-        <Footer />
+        <div className="">
+          {" "}
+          <Outlet />
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
