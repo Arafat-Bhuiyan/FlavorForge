@@ -95,9 +95,9 @@ export default function Signup() {
 
 
   return (
-    <div className="flex items-center justify-center px-4 mt-14 mb-32">
+    <div className="flex items-center justify-center px-0 sm:px-4 mt-8 sm:mt-14 mb-20 sm:mb-32">
       <div className="w-full max-w-xl max-h-screen">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8">
           {/* Logo */}
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16">

@@ -37,10 +37,10 @@ export const ForgetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center px-4 mt-14 mb-32">
-      <div className="w-full max-h-screen flex justify-between items-center gap-32">
+    <div className="flex items-center justify-center px-0 sm:px-4 mt-8 sm:mt-14 mb-20 sm:mb-32">
+      <div className="w-full max-h-screen flex flex-col lg:flex-row justify-center items-center gap-16 lg:gap-32">
         {!showVerification ? (
-          <div className="w-1/2 bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <div className="w-full lg:w-1/2 bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8 order-2 lg:order-1">
             {/* Logo */}
             <div className="flex items-center justify-center mb-6">
               <div className="w-16 h-16">
@@ -50,7 +50,9 @@ export const ForgetPassword = () => {
 
             {/* Divider */}
             <div className="text-left my-4">
-              <h1 className="text-4xl text-[#E4572E] pb-2">Forgot password</h1>
+              <h1 className="text-3xl sm:text-4xl text-[#E4572E] pb-2">
+                Forgot password
+              </h1>
               <p className="text-base text-[#707070]">
                 Enter your email for the verification process, we will send 4
                 digits code to your email.
@@ -91,7 +93,7 @@ export const ForgetPassword = () => {
           <Verification />
         )}
 
-        <div className="w-1/2">
+        <div className="w-full sm:w-2/3 lg:w-1/2 order-1 lg:order-2">
           <img src={foodBot} alt="" />
         </div>
       </div>
