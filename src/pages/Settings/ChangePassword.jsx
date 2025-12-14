@@ -77,7 +77,7 @@ export const ChangePassword = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-[614px] bg-[#E4572E] text-white py-2 rounded-lg font-medium text-lg"
+            className="w-full bg-[#E4572E] text-white py-2 rounded-lg font-medium text-lg"
           >
             Confirm New Password
           </button>

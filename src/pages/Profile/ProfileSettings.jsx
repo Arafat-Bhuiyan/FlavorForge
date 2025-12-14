@@ -174,10 +174,10 @@ const ProfileSettings = () => {
     console.log("USER from profile", user);
   }, [user]);
   return (
-    <div className="bg-white rounded-lg shadow-lg w-full p-8 space-y-6">
+    <div className="bg-white rounded-lg shadow-lg w-full p-4 sm:p-8 space-y-6 my-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 relative">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 relative w-full">
           <div className="w-16 h-16 rounded-full overflow-hidden">
             <img
               src={user?.image_url || profile}
@@ -208,7 +208,7 @@ const ProfileSettings = () => {
             <p className="text-[#2E2E2E]/50 text-sm">{email}</p>
           </div>
         </div>
-        <button className="bg-[#E4572E] text-white px-4 py-2 rounded-lg flex items-center gap-2">
+        <button className="bg-[#E4572E] text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto">
           <Edit2 className="w-4 h-4" /> Edit
         </button>
       </div>
@@ -331,16 +331,16 @@ const ProfileSettings = () => {
           </div>
         )}
 
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 pt-4">
           <button
             onClick={() => setShowEmailInput((prev) => !prev)}
-            className="bg-[#FFE3D5] text-[#E4572E] text-sm w-52 h-10 rounded-lg"
+            className="bg-[#FFE3D5] text-[#E4572E] text-sm w-full sm:w-52 h-10 rounded-lg"
           >
             +Add Email Address
           </button>
           <button
             onClick={updateProfileData}
-            className="bg-[#E4572E] text-white w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base"
+            className="bg-[#E4572E] text-white w-full sm:w-28 h-10 rounded-lg hover:bg-[#f55423] transition-colors font-medium text-base"
           >
             Save
           </button>

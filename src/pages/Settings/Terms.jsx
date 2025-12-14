@@ -21,14 +21,14 @@ export const Terms = () => {
   }, []);
 
   return (
-    <div className="w-full p-8 flex flex-col justify-center items-center gap-10">
-      <h1 className="font-semibold text-3xl text-[#E4572E]">Terms & Conditions</h1>
+    <div className="w-full p-4 sm:p-8 flex flex-col justify-center items-center gap-6 sm:gap-10 my-8">
+      <h1 className="font-semibold text-2xl sm:text-3xl text-[#E4572E] text-center">Terms & Conditions</h1>
 
       <div className="w-full">
         {/* Render the terms using dangerouslySetInnerHTML */}
         {terms ? (
           <div
-            className="text-xl font-medium"
+            className="prose max-w-none text-base sm:text-lg font-medium"
             dangerouslySetInnerHTML={{ __html: terms }}
           />
         ) : (

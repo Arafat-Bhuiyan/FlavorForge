@@ -34,9 +34,9 @@ const PopularRecipe = () => {
   };
 
   return (
-    <div className="w-full p-6 flex gap-6">
+    <div className="w-full p-4 md:p-6 flex flex-col lg:flex-row gap-6 my-8">
       {/* Left Image */}
-      <div className="w-1/4 flex flex-col gap-5">
+      <div className="w-full lg:w-1/4 flex flex-col gap-5">
         <img
           src={recipeImages[recipe.image]}
           alt={recipe.title}
@@ -44,16 +44,16 @@ const PopularRecipe = () => {
         />
 
         {/* Buttons */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-full">
           <button
             onClick={handleNext}
-            className="w-36 h-10 bg-[#E4572E] text-white text-base font-medium rounded-lg hover:bg-[#e94412]"
+            className="flex-1 sm:flex-none sm:w-36 h-10 bg-[#E4572E] text-white text-base font-medium rounded-lg hover:bg-[#e94412]"
           >
             Next
           </button>
           <button
             onClick={handleBack}
-            className="w-36 h-10 bg-[#E4572E] text-white text-base font-medium rounded-lg hover:bg-[#e94412]"
+            className="flex-1 sm:flex-none sm:w-36 h-10 bg-[#E4572E] text-white text-base font-medium rounded-lg hover:bg-[#e94412]"
           >
             Back
           </button>
@@ -61,11 +61,13 @@ const PopularRecipe = () => {
       </div>
 
       {/* Right Content */}
-      <div className="w-3/4 flex flex-col gap-6">
+      <div className="w-full lg:w-3/4 flex flex-col gap-6">
         {/* Title + Desc */}
         <div className="bg-white py-3 px-4 rounded-xl">
-          <h2 className="text-[#2E2E2E] text-3xl font-bold">{recipe.title}</h2>
-          <p className="text-[#2E2E2E] mt-2 text-lg">{recipe.description}</p>
+          <h2 className="text-[#2E2E2E] text-2xl md:text-3xl font-bold">
+            {recipe.title}
+          </h2>
+          <p className="text-[#2E2E2E] mt-2 text-base md:text-lg">{recipe.description}</p>
 
           {/* Rating */}
           <div className="flex items-center gap-2 mt-2">

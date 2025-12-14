@@ -66,7 +66,7 @@ const handleDeleteAccount = async () => {
             Delete Account Page UI
           </h3>
         </div>
-        <div className="p-4 w-[571px] mx-auto bg-[#FFEAEA] flex items-center">
+        <div className="p-4 w-full mx-auto bg-[#FFEAEA] flex items-center">
           <p className="text-sm text-[#2e2e2e] mb-3">
             Once deleted, your account cannot be recovered. All your recipes,
             preferences, and subscription data will be permanently removed.

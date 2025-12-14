@@ -49,10 +49,13 @@ export default function Subscribe() {
   };
 
   return (
-    <div className="w-full p-6 flex gap-36 items-start">
+    <div className="w-full p-4 sm:p-6 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start my-8">
       {/* Header */}
-      <div className="w-8" onClick={() => window.history.back()}>
-        <svg
+      <button
+        className="w-8 h-8 flex-shrink-0"
+        onClick={() => window.history.back()}
+      >
+        <svg 
           xmlns="http://www.w3.org/2000/svg"
           width={28}
           height={28}
@@ -63,11 +66,13 @@ export default function Subscribe() {
             d="M609.408 149.376L277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0a30.59 30.59 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.59 30.59 0 0 0 0-42.688a29.12 29.12 0 0 0-41.728 0"
           ></path>
         </svg>
-      </div>
+      </button>
 
-      <div className="w-[1024px]">
-        <h1 className="text-4xl font-medium text-center mb-2">Subscribe Now</h1>
-        <p className="text-center text-[#2E2E2E] font-medium text-base mb-14">
+      <div className="w-full max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-4xl font-medium text-center mb-2">
+          Subscribe Now
+        </h1>
+        <p className="text-center text-[#2E2E2E] font-medium text-base mb-8 sm:mb-14">
           Join thousands of home cooks making cooking fun and easy every day!
         </p>
 
@@ -107,7 +112,7 @@ export default function Subscribe() {
                   <span className="w-2.5 h-2.5 rounded-full bg-[#FBFBFB]"></span>
                 )}
               </span>
-              <span className="font-medium text-xl">
+              <span className="font-medium text-lg sm:text-xl">
                 {subscription.timing === "monthly"
                   ? "Bill Monthly"
                   : "Bill Yearly"}
@@ -126,9 +131,9 @@ export default function Subscribe() {
           </div>
         ))}
 
-        <div className="flex flex-col gap-3 mt-20">
+        <div className="flex flex-col gap-3 mt-10 sm:mt-20">
           {/* Terms */}
-          <p className="text-center text-lg text-[#2e2e2e] mb-6">
+          <p className="text-center text-base sm:text-lg text-[#2e2e2e] mb-4 sm:mb-6">
             By clicking on subscribe now you agree to our terms & condition.
             Cancel anytime
           </p>
@@ -136,7 +141,7 @@ export default function Subscribe() {
           {/* Subscribe Button */}
           <button
             onClick={handleSubscription}
-            className="w-[732px] h-14 mx-auto bg-[#ef4c23] text-white rounded-lg font-medium text-xl hover:bg-[#d6401b]"
+            className="w-full max-w-2xl h-14 mx-auto bg-[#ef4c23] text-white rounded-lg font-medium text-xl hover:bg-[#d6401b]"
           >
             Subscribe Now
           </button>
