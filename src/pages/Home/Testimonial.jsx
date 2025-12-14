@@ -70,10 +70,12 @@ export const Testimonial = () => {
 
   // ✅ Scroll to card when index changes
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      const cardWidth = 320; // w-80 = 320px
-      const gap = 24; // gap-6 = 24px
-      const scrollPosition = currentIndex * (cardWidth + gap);
+    if (scrollContainerRef.current?.children[currentIndex]) {
+      const currentCard = scrollContainerRef.current.children[currentIndex];
+      // Calculate the position to scroll to, centering the card in the view
+      const scrollPosition =
+        currentCard.offsetLeft -
+        (scrollContainerRef.current.offsetWidth - currentCard.offsetWidth) / 2;
 
       scrollContainerRef.current.scrollTo({
         left: scrollPosition,
@@ -94,16 +96,16 @@ export const Testimonial = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center justify-center">
+    <div className="w-full flex flex-col gap-2 items-center justify-center mt-16 lg:mt-0 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <div className="text-[#E4572E] font-semibold text-3xl mb-2">
             Testimonials
           </div>
-          <h2 className="text-4xl font-medium text-[#2E2E2E] mb-4">
+          <h2 className="text-3xl md:text-4xl font-medium text-[#2E2E2E] mb-4">
             Trusted by Thousands of Food Lovers
           </h2>
-          <p className="text-[#2E2E2E] text-lg">
+          <p className="text-[#2E2E2E] text-base md:text-lg">
             Hear from our users who are achieving their health goals and
             mastering new dishes with FlavorForge
           </p>
@@ -112,13 +114,13 @@ export const Testimonial = () => {
         <div className="relative">
           <div
             ref={scrollContainerRef}
-            className="flex gap-6 overflow-x-hidden pb-4"
+            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg p-6"
+                className="flex-shrink-0 w-[90vw] sm:w-80 bg-white rounded-xl shadow-lg p-6"
                 style={{ scrollSnapAlign: "start" }}
               >
                 <div className="flex mb-4">

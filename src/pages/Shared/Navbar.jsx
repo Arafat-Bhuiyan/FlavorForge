@@ -1,57 +1,58 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import logo from "/FlavorForgeLogo.png";
-import { Settings } from "lucide-react";
+import { Settings, Menu, X } from "lucide-react";
 import { MyContext } from "../../Provider/Provider";
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const goToProfileSetting = () => navigate("/profile-settings");
   const goToSettings = () => navigate("/settings");
   const { user, logout } = useContext(MyContext);
 
-  if (user) {
-    console.log(user);
-  }
+  const navLinks = (
+    <>
+      <Link
+        to="/"
+        className={
+          pathname === "/"
+            ? "px-4 py-2 bg-[#E4572E] text-white rounded"
+            : "px-4 py-2 text-gray-700 hover:text-[#E4572E]"
+        }
+        onClick={() => setIsMenuOpen(false)}
+      >
+        Home
+      </Link>
+      <a
+        href="/#how-it-works"
+        className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        How it Works
+      </a>
+      <a
+        href="/#faqs"
+        className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        FAQs
+      </a>
+    </>
+  );
 
-  useEffect(() => {
-    console.log("USER",user);
-  }, [user]);
   return (
-    <div className="pb-16">
-      <div className="flex justify-between items-center">
+    <div className="pb-16 relative">
+      <div className="flex justify-between items-center p-4 md:p-0">
         <Link to="/">
           <img src={logo || "/placeholder.svg"} alt="" className="w-16 h-14" />
         </Link>
 
-        <div className="flex gap-10 font-medium text-lg items-center">
-          <Link
-            to="/"
-            className={
-              pathname === "/"
-                ? "px-4 py-2 bg-[#E4572E] text-white rounded"
-                : "px-4 py-2 text-gray-700 hover:text-[#E4572E]"
-            }
-          >
-            Home
-          </Link>
-
-          <a
-            href="/#how-it-works"
-            className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
-          >
-            How it Works
-          </a>
-
-          <a
-            href="/#faqs"
-            className="px-4 py-2 text-gray-700 hover:text-[#E4572E]"
-          >
-            FAQs
-          </a>
+        <div className="hidden md:flex gap-4 lg:gap-10 font-medium text-lg items-center">
+          {navLinks}
         </div>
 
         <div className="flex gap-3 font-medium text-base items-center">
@@ -59,7 +60,10 @@ export const Navbar = () => {
             <div className="flex items-center gap-4">
               <div onClick={goToProfileSetting} className="cursor-pointer">
                 <img
-                  src={user?.image_url || "https://i.ibb.co.com/cK8Kz98s/da7ed7b0-5f66-4f97-a610-51100d3b9fd2.jpg" }
+                  src={
+                    user?.image_url ||
+                    "https://i.ibb.co/cK8Kz98s/da7ed7b0-5f66-4f97-a610-51100d3b9fd2.jpg"
+                  }
                   alt="profile"
                   className="w-12 h-12 ring-2 ring-[#E4572E] rounded-full"
                 />
@@ -102,7 +106,24 @@ export const Navbar = () => {
             </>
           )}
         </div>
+
+        <div className="md:hidden flex items-center">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
+
+      {isMenuOpen && (
+        <div
+          className="md:hidden absolute top-24 left-0 w-full bg-white shadow-lg z-50"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex flex-col items-center gap-6 font-medium text-lg py-8">
+            {navLinks}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

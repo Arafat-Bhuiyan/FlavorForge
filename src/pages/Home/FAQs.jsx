@@ -45,30 +45,39 @@ const FAQs = () => {
   return (
     <div
       id="faqs"
-      className="w-full flex flex-col gap-2 items-center justify-center"
+      className="w-full flex flex-col gap-2 items-center justify-center mt-16 px-4"
     >
-      <h1 className="text-[#2E2E2E] font-semibold text-3xl mb-2 mt-8 text-center">
+      <h1 className="text-[#2E2E2E] font-semibold text-3xl md:text-4xl mb-2 mt-8 text-center">
         FAQs
       </h1>
       <div className="w-full space-y-3">
         {faqs.map((faq, index) => (
           <div
-            key={index}
-            className="w-full border border-[#E4572E] bg-[#FFFFFF] rounded-lg cursor-pointer"
-            onClick={() => toggleFAQ(index)}
+            key={faq.question}
+            className="w-full border border-[#E4572E] bg-[#FFFFFF] rounded-lg"
           >
-            <div className="flex justify-between items-center p-4 w-full">
-              <h2 className="font-medium text-xl">{faq.question}</h2>
+            <button
+              aria-expanded={openIndex === index}
+              aria-controls={`faq-answer-${index}`}
+              onClick={() => toggleFAQ(index)}
+              className="flex justify-between items-center p-4 w-full text-left"
+            >
+              <h2 className="font-medium text-base sm:text-lg md:text-xl">
+                {faq.question}
+              </h2>
               {openIndex === index ? (
                 <ChevronUpIcon className="w-5 h-5 text-[#2E2E2E]" />
               ) : (
                 <ChevronDownIcon className="w-5 h-5 text-[#2E2E2E]" />
               )}
-            </div>
+            </button>
             {openIndex === index && (
-              <p className="mt-2 text-[#2E2E2E] border-t border-[#E4572E] p-4 w-full font-normal text-base">
+              <div
+                id={`faq-answer-${index}`}
+                className="text-[#2E2E2E] border-t border-[#E4572E] p-4 w-full font-normal text-base"
+              >
                 {faq.answer}
-              </p>
+              </div>
             )}
           </div>
         ))}

@@ -61,21 +61,21 @@ export const AiRecipies = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center justify-center mt-14">
-      <h1 className="font-semibold text-4xl text-[#2E2E2E] mb-7">
+    <div className="w-full flex flex-col gap-2 items-center justify-center mt-16 lg:mt-14 px-4">
+      <h1 className="font-semibold text-3xl md:text-4xl text-[#2E2E2E] mb-7 text-center">
         Discover All AI-generated Recipes
       </h1>
 
-      <div className="grid grid-cols-4 gap-5 place-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 place-items-center">
         {recipes.map((recipe, index) => (
           <div
-            key={index}
-            className="relative w-64 h-64 group rounded-xl overflow-hidden shadow-md transition-all group-hover:shadow-[8px_-8px_20px_rgba(0,0,0,0.3)] group-hover:scale-105"
+            key={`${recipe.title}-${index}`}
+            className="relative w-full max-w-xs sm:w-64 h-64 group rounded-xl overflow-hidden shadow-md transition-all group-hover:shadow-[8px_-8px_20px_rgba(0,0,0,0.3)] group-hover:scale-105"
           >
             {/* Image */}
             <img
               src={recipe.img}
-              alt={`recipe-${index + 1}`}
+              alt={recipe.title}
               className="w-full h-full object-cover transition-all group-hover:scale-110"
             />
 

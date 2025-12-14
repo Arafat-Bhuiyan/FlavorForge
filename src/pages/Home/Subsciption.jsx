@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import authApiInstance from "../../utils/privateApiInstance";
-import { de } from "date-fns/locale";
 import publicApiInstance from "../../utils/publicApiInstance";
 
 const Subscription = () => {
@@ -30,18 +28,18 @@ const Subscription = () => {
   };
 
   return (
-    <div className="min-h-screen px-4">
+    <div className="min-h-screen px-4 mt-16 lg:mt-0">
       {/* Pricing Section */}
       <div className="max-w-7xl mx-auto mt-20">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-medium text-[#2E2E2E] mb-4">
+          <h1 className="text-3xl md:text-4xl font-medium text-[#2E2E2E] mb-4">
             Unlock the Full Kitchen Experience
           </h1>
-          <p className="text-lg text-[#2E2E2E] text-center">
-            Go premium to access unlimited AI recipes, and unlock unlimited
-            access to ingredients lists <br /> for every recipe, plus instant
-            chatbot-powered cooking instructions— all designed to make <br />{" "}
-            every meal easier, healthier, and more delicious
+          <p className="text-base md:text-lg text-[#2E2E2E] text-center max-w-4xl mx-auto">
+            Go premium to access unlimited AI recipes, and unlock unlimited access
+            to ingredients lists for every recipe, plus instant chatbot-powered
+            cooking instructions— all designed to make every meal easier,
+            healthier, and more delicious.
           </p>
         </div>
 
@@ -57,28 +55,30 @@ const Subscription = () => {
               }`}
             >
               <div className="flex-1">
-                <div className="text-lg text-[#E4572E] font-semibold">
-                  {subscription.timing === "monthly"
-                    ? "Monthly Plan"
-                    : "Yearly Plan"}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="text-lg text-[#E4572E] font-semibold">
+                    {subscription.timing === "monthly"
+                      ? "Monthly Plan"
+                      : "Yearly Plan"}
+                  </div>
                   {subscription.timing === "yearly" && (
-                    <span className="text-[#2E2E2E] text-base font-medium">
+                    <span className="text-[#2E2E2E] text-sm sm:text-base font-medium">
                       (Best Value — Save 20%)
                     </span>
                   )}
                 </div>
-                <h3 className="text-3xl text-[#2E2E2E] my-5">
+                <h3 className="text-2xl sm:text-3xl text-[#2E2E2E] my-5 font-semibold">
                   {subscription.package_id.charAt(0).toUpperCase() +
                     subscription.package_id.slice(1)}
                 </h3>
-                <p className="w-1/2 text-[#2E2E2E] text-lg">
+                <p className="w-full md:w-3/4 text-[#2E2E2E] text-base sm:text-lg">
                   Experience the convenience of our services with a handful of
                   small projects.
                 </p>
               </div>
 
               <div className="my-10">
-                <span className="text-4xl font-bold text-[#E4572E]">
+                <span className="text-3xl sm:text-4xl font-bold text-[#E4572E]">
                   {" "}
                   <span className="text-2xl font-normal">$</span>
                   {subscription.initial_price}

@@ -36,11 +36,11 @@ const PopularDishes = () => {
   const navigate = useNavigate();
 
   const scrollLeft = () => {
-    scrollRef.current.scrollLeft -= 1000;
+    scrollRef.current.scrollBy({ left: -scrollRef.current.clientWidth, behavior: 'smooth' });
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollLeft += 800;
+    scrollRef.current.scrollBy({ left: scrollRef.current.clientWidth, behavior: 'smooth' });
   };
 
   const [dishes, setDishes] = useState([]);
@@ -50,9 +50,11 @@ const PopularDishes = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center justify-center mt-14">
-      <h1 className="font-semibold text-4xl text-[#2E2E2E]">Popular Dishes</h1>
-      <p className="font-medium text-lg text-[#2E2E2E]">
+    <div className="w-full flex flex-col gap-2 items-center justify-center mt-16 lg:mt-14 px-4">
+      <h1 className="font-semibold text-3xl md:text-4xl text-[#2E2E2E] text-center">
+        Popular Dishes
+      </h1>
+      <p className="font-medium text-base md:text-lg text-[#2E2E2E] text-center">
         Tried, loved, and cooked by thousands of foodies worldwide
       </p>
 
@@ -60,23 +62,23 @@ const PopularDishes = () => {
         {/* Left Arrow */}
         <button
           onClick={scrollLeft}
-          className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-10"
+          className="absolute left-[-15px] sm:left-[-30px] top-1/2 transform -translate-y-1/2 z-10 hidden md:block"
         >
-          <img src={left} alt="" />
+          <img src={left} alt="Previous" />
         </button>
 
         {/* Card Section - Horizontal Scroll */}
         <div
           ref={scrollRef}
-          className="w-full overflow-x-auto scrollbar-hide flex gap-5 px-4 snap-x snap-mandatory"
+          className="w-full overflow-x-auto scrollbar-hide flex gap-5 px-0 sm:px-4 snap-x snap-mandatory"
         >
           {dishes.map((dish) => (
             <div
               onClick={() => navigate("/popular-recipe")}
               key={dish.id}
-              className="bg-white p-4 rounded-2xl w-[410px] flex-shrink-0 snap-start h-[452px]"
+              className="bg-white p-4 rounded-2xl w-[300px] sm:w-[410px] flex-shrink-0 snap-start h-auto sm:h-[452px] cursor-pointer"
             >
-              <div className="w-[380px] h-[332px] relative">
+              <div className="w-full h-[250px] sm:h-[332px] relative">
                 <img
                   src={dish.image}
                   alt={dish.title}
@@ -93,9 +95,9 @@ const PopularDishes = () => {
         {/* Right Arrow */}
         <button
           onClick={scrollRight}
-          className="absolute right-[-20px] top-1/2 transform -translate-y-1/2 z-10"
+          className="absolute right-[-15px] sm:right-[-20px] top-1/2 transform -translate-y-1/2 z-10 hidden md:block"
         >
-          <img src={right} alt="" />
+          <img src={right} alt="Next" />
         </button>
       </div>
     </div>
