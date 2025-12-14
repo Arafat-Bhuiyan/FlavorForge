@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import aiLogo from "../../assets/images/ai-logo.png";
 import cancel from "../../assets/images/cancel-circle.png";
 import send from "../../assets/images/send.png";
-import bot from "../../assets/images/bot.png";
+import bot from "../../assets/images/bot.png"; // This is the bot avatar
 import user from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import authApiInstance from "../../utils/privateApiInstance";
@@ -24,7 +24,7 @@ const Chatbot = () => {
     },
   ]);
 
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [chatId, setChatId] = useState(null);
   const [showModal, setShowModal] = useState(false); // modal control
   const [isBotTyping, setIsBotTyping] = useState(false);
@@ -216,168 +216,183 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="w-full relative">
-      {/* Header */}
-      <div className="bg-[#E4572E] text-white py-5 px-14 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <img src={aiLogo} alt="" />
-          <div>
-            <h3 className="font-bold text-2xl">Chef</h3>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#87FF70] rounded-full"></div>
-              <p className="text-[#87FF70] text-xs">Online</p>
+    <div className="w-full flex h-[calc(100vh-112px)]">
+      {/* Sidebar - Desktop */}
+      <div className="hidden md:block w-[320px] flex-shrink-0">
+        <ChatHistorySidebar
+          activeChatId={chatId}
+          onNewChat={handleNewChat}
+          onSelectChat={handleSelectChat}
+        />
+      </div>
+
+      {/* Chat Window */}
+      <div className="flex-1 flex flex-col relative">
+        {/* Header */}
+        <div className="bg-[#E4572E] text-white py-3 sm:py-5 px-4 sm:px-8 md:px-14 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <img src={aiLogo} alt="AI Chef Logo" className="w-10 h-10" />
+            <div>
+              <h3 className="font-bold text-xl sm:text-2xl">Chef</h3>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[#87FF70] rounded-full"></div>
+                <p className="text-[#87FF70] text-xs">Online</p>
+              </div>
             </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              className="p-1 md:hidden"
+              onClick={() => setShowHistory(true)}
+            >
+              History
+            </button>
           </div>
         </div>
-        <button className="p-1" onClick={() => setShowSidebar((prev) => !prev)}>
-          <img src={cancel} alt="" />
-        </button>
-      </div>
 
-      {/* Chat Messages */}
-      <div className="h-[590px] overflow-y-auto p-4 space-y-4 bg-[#FFFBEE]">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-end ${
-              msg.type === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
-            {/* Avatar */}
-            <div className="w-10 h-10 flex items-center justify-center mr-4 self-end">
-              <img src={msg.type === "user" ? user : bot} alt="" />
-            </div>
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FFFBEE]">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex items-end ${
+                msg.type === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {/* Avatar */}
+              <div className="w-10 h-10 flex items-center justify-center mr-4 self-end flex-shrink-0">
+                <img
+                  src={msg.type === "user" ? user : bot}
+                  alt={msg.type === "user" ? "User" : "Bot"}
+                />
+              </div>
 
-            {/* === Normal Conversation === */}
-            {msg.type === "bot" || msg.type === "user" ? (
-              <div className="relative max-w-xs">
-                <div
-                  className={`px-4 py-3 rounded-2xl shadow-sm ${
-                    msg.type === "bot"
-                      ? "bg-[#FC8A07] text-white rounded-xl"
-                      : "bg-[#F8EFE6] text-[#2E2E2E] rounded-xl border"
-                  }`}
-                >
-                  <p className="text-sm leading-relaxed">{msg.text}</p>
+              {/* === Normal Conversation === */}
+              {msg.type === "bot" || msg.type === "user" ? (
+                <div className="relative max-w-xs sm:max-w-md">
                   <div
-                    className={`flex items-center text-xs justify-end mt-1 space-x-1 ${
-                      msg.type === "user" ? "text-gray-400" : "text-white"
+                    className={`px-4 py-3 rounded-2xl shadow-sm ${
+                      msg.type === "bot"
+                        ? "bg-[#FC8A07] text-white rounded-xl"
+                        : "bg-[#F8EFE6] text-[#2E2E2E] rounded-xl border"
                     }`}
                   >
-                    <span>{msg.timestamp}</span>
+                    <p className="text-sm leading-relaxed">{msg.text}</p>
+                    <div
+                      className={`flex items-center text-xs justify-end mt-1 space-x-1 ${
+                        msg.type === "user" ? "text-gray-400" : "text-white"
+                      }`}
+                    >
+                      <span>{msg.timestamp}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
 
-            {/* === Recipe UI === */}
-            {msg.type === "recipe" && (
-              <div className="relative max-w-lg">
-                <div className="px-5 py-4 bg-white border rounded-2xl shadow-md text-[#2E2E2E]">
-                  <h3 className="text-xl font-bold text-[#E4572E] mb-2">
-                    {msg.recipe.title}
-                  </h3>
-                  <p className="text-sm italic text-gray-600 mb-3">
-                    ⭐ {msg.recipe.rating} | {msg.timestamp}
-                  </p>
-                  <p className="text-base mb-4">{msg.recipe.overview}</p>
+              {/* === Recipe UI === */}
+              {msg.type === "recipe" && (
+                <div className="relative max-w-md lg:max-w-lg">
+                  <div className="px-5 py-4 bg-white border rounded-2xl shadow-md text-[#2E2E2E]">
+                    <h3 className="text-xl font-bold text-[#E4572E] mb-2">
+                      {msg.recipe.title}
+                    </h3>
+                    <p className="text-sm italic text-gray-600 mb-3">
+                      ⭐ {msg.recipe.rating} | {msg.timestamp}
+                    </p>
+                    <p className="text-base mb-4">{msg.recipe.overview}</p>
 
-                  <h4 className="font-semibold text-lg mb-2">Ingredients:</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm mb-4">
-                    {msg.recipe.ingredients.map((ing, i) => (
-                      <li key={i}>{ing}</li>
-                    ))}
-                  </ul>
+                    <h4 className="font-semibold text-lg mb-2">Ingredients:</h4>
+                    <ul className="list-disc list-inside space-y-1 text-sm mb-4">
+                      {msg.recipe.ingredients.map((ing, i) => (
+                        <li key={i}>{ing}</li>
+                      ))}
+                    </ul>
 
-                  <h4 className="font-semibold text-lg mb-2">Instructions:</h4>
-                  <p className="whitespace-pre-line text-sm leading-relaxed">
-                    {msg.recipe.instructions}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* === Error UI === */}
-            {msg.type === "error" && (
-              <div className="relative max-w-lg">
-                <div className="px-5 py-4 bg-[#FFEDED] border border-[#E4572E] rounded-2xl shadow-md text-[#2E2E2E]">
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-[#E4572E] mb-2">
-                    {msg.error.title}
-                  </h3>
-
-                  {/* Overview */}
-                  <p className="text-base mb-4">{msg.error.overview}</p>
-
-                  {/* Bold header for items */}
-                  {msg.error["ingrediants items"]?.length > 0 && (
-                    <>
-                      <h4 className="font-semibold text-lg mb-2">
-                        Invalid Ingredients:
-                      </h4>
-                      <ul className="list-disc list-inside space-y-1 text-sm mb-2">
-                        {msg.error["ingrediants items"].map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-
-                  {/* Timestamp */}
-                  <div className="flex items-center text-xs justify-end mt-1 text-[#E4572E]">
-                    <span>{msg.timestamp}</span>
+                    <h4 className="font-semibold text-lg mb-2">Instructions:</h4>
+                    <p className="whitespace-pre-line text-sm leading-relaxed">
+                      {msg.recipe.instructions}
+                    </p>
                   </div>
                 </div>
+              )}
+
+              {/* === Error UI === */}
+              {msg.type === "error" && (
+                <div className="relative max-w-md lg:max-w-lg">
+                  <div className="px-5 py-4 bg-[#FFEDED] border border-[#E4572E] rounded-2xl shadow-md text-[#2E2E2E]">
+                    <h3 className="text-xl font-bold text-[#E4572E] mb-2">
+                      {msg.error.title}
+                    </h3>
+                    <p className="text-base mb-4">{msg.error.overview}</p>
+                    {msg.error["ingrediants items"]?.length > 0 && (
+                      <>
+                        <h4 className="font-semibold text-lg mb-2">
+                          Invalid Ingredients:
+                        </h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm mb-2">
+                          {msg.error["ingrediants items"].map((item, i) => (
+                            <li key={i}>{item}</li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                    <div className="flex items-center text-xs justify-end mt-1 text-[#E4572E]">
+                      <span>{msg.timestamp}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {isBotTyping && (
+            <div className="flex items-start justify-start">
+              <div className="w-10 h-10 flex items-center justify-center mr-4">
+                <img src={bot} alt="bot" />
               </div>
-            )}
-          </div>
-        ))}
-
-        {/* === Bot Typing Indicator === */}
-        {isBotTyping && (
-          <div className="flex items-start justify-start">
-            {/* Bot Avatar */}
-            <div className="w-10 h-10 flex items-center justify-center mr-4">
-              <img src={bot} alt="bot" />
+              <div className="px-4 py-2 bg-[#FC8A07] text-white rounded-2xl shadow-sm text-sm">
+                Chef is thinking...
+              </div>
             </div>
+          )}
+        </div>
 
-            {/* Typing bubble */}
-            <div className="px-4 py-2 bg-[#FC8A07] text-white rounded-2xl shadow-sm text-sm">
-              Chef is thinking...
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Message Input */}
-      <div className="p-4 bg-white shadow-xl rounded-b-lg">
-        <div className="flex items-center space-x-3">
-          <div className="flex-1 relative">
+        {/* Message Input */}
+        <div className="p-4 bg-white shadow-xl">
+          <div className="flex items-center space-x-3 relative">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message here..."
-              className="w-full px-4 py-3 bg-[#FFFBEE] rounded-2xl border-none outline-none text-lg text-[#444444] placeholder-gray-500"
+              className="w-full px-4 py-3 bg-[#FFFBEE] rounded-2xl border-none outline-none text-lg text-[#444444] placeholder-gray-500 pr-14"
             />
+            <button
+              onClick={handleSendMessage}
+              className="w-11 h-11 flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <img src={send} alt="Send message" />
+            </button>
           </div>
-          <button
-            onClick={handleSendMessage}
-            className="w-11 h-11 flex items-center justify-center absolute right-[20px] "
-          >
-            <img src={send} alt="" />
-          </button>
         </div>
       </div>
 
-      {/* Right Sidebar */}
-      {showSidebar && (
-        <div className="absolute top-0 left-[-309px]">
+      {/* Sidebar - Mobile Overlay */}
+      {showHistory && (
+        <div className="absolute top-0 left-0 w-full h-full z-20 md:hidden">
+          <div className="absolute top-3 right-3">
+            <button className="p-1" onClick={() => setShowHistory(false)}>
+              <img src={cancel} alt="Close history" />
+            </button>
+          </div>
           <ChatHistorySidebar
             activeChatId={chatId}
             onNewChat={handleNewChat}
-            onSelectChat={handleSelectChat}
+            onSelectChat={(chat) => {
+              handleSelectChat(chat);
+              setShowHistory(false); // Close sidebar on selection
+            }}
           />
         </div>
       )}
@@ -385,7 +400,7 @@ const Chatbot = () => {
       {/* Free Limit Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-[#F5F5F5] bg-opacity-20 backdrop-blur-sm">
-          <div className="w-[648px] p-3 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3">
+          <div className="w-11/12 max-w-lg p-4 sm:p-6 border border-[#E4572E]/27 rounded-lg bg-white flex flex-col items-center space-y-3 text-center">
             <p className="text-black text-base">
               You’ve hit the Free recipe plan limit for FlavorForge
             </p>
